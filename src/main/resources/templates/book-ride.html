@@ -99,6 +99,9 @@
                         <i class="fa-solid fa-map-location-dot text-purple-400"></i> Set Ride Specifications
                     </h3>
 
+                    <!-- Alert States -->
+                    <div th:if="${error}" class="bg-rose-500/10 text-rose-450 border border-rose-500/20 p-3.5 mb-5 rounded-xl text-xs font-semibold flex items-center gap-2" th:text="${error}"></div>
+
                     <form th:action="@{/book-ride}" method="post" class="flex flex-col gap-5">
                         
                         <!-- Pickup -->
@@ -162,6 +165,21 @@
             </div>
 
         </div>
+    </div>
+    
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const dateInput = document.querySelector('input[name="pickupDate"]');
+            if (dateInput) {
+                // Get local date in YYYY-MM-DD format
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = String(today.getMonth() + 1).padStart(2, '0');
+                const day = String(today.getDate()).padStart(2, '0');
+                dateInput.min = `${year}-${month}-${day}`;
+            }
+        });
+    </script>
     </div>
 </main>
 </html>

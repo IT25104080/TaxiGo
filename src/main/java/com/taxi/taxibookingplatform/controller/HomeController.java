@@ -61,6 +61,19 @@ public class HomeController {
             @RequestParam String message,
             Model model) throws IOException {
 
+        if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidName(name)) {
+            model.addAttribute("error", "Name must contain only alphabetic characters and spaces (2 to 50 characters).");
+            return "contact";
+        }
+        if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidEmail(email)) {
+            model.addAttribute("error", "Please provide a valid email address.");
+            return "contact";
+        }
+        if (subject == null || subject.isBlank() || message == null || message.isBlank()) {
+            model.addAttribute("error", "Subject and message are required fields.");
+            return "contact";
+        }
+
         ContactMessage msg = new ContactMessage(
                 "MSG" + UUID.randomUUID().toString().replace("-", "").substring(0, 8),
                 name, email, subject, message, LocalDateTime.now()

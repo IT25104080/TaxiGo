@@ -2,56 +2,99 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{fragments/layout :: html(~{::title}, ~{::main})}">
 <head><title th:fragment="title">Services – TaxiGo</title></head>
-<main th:fragment="main">
-    <section class="hero-gradient text-white py-16">
-        <div class="container mx-auto px-4 text-center">
-            <h1 class="text-4xl font-bold">Our Services</h1>
-            <p class="text-purple-100 mt-4">Rides for every occasion and budget.</p>
+<main th:fragment="main" class="bg-slate-950 text-slate-100 min-h-screen py-16 relative overflow-hidden">
+    <!-- Glowing background accents -->
+    <div class="absolute w-[450px] h-[450px] rounded-full bg-purple-500/10 blur-[130px] top-[10%] left-[10%] z-0"></div>
+    <div class="absolute w-[450px] h-[450px] rounded-full bg-yellow-400/5 blur-[130px] bottom-[15%] right-[10%] z-0"></div>
+
+    <div class="container mx-auto px-6 relative z-10">
+        <!-- Header -->
+        <div class="text-center max-w-2xl mx-auto mb-16 relative z-10">
+            <span class="text-xs font-bold text-yellow-400 uppercase tracking-widest bg-yellow-400/10 border border-yellow-400/20 rounded-full px-4 py-1.5 animate-pulse">Our Fleet</span>
+            <h1 class="text-4xl md:text-5xl font-black text-white mt-4 font-heading tracking-tight">Our <span class="bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent">Services</span></h1>
+            <p class="text-slate-400 text-sm mt-3 font-sans">
+                Rides for every occasion, lifestyle, and budget parameters.
+            </p>
         </div>
-    </section>
-    <section class="py-16 container mx-auto px-4">
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition">
-                <div class="text-4xl mb-4">🚕</div>
-                <h3 class="text-xl font-bold text-purple-700">Standard Ride</h3>
-                <p class="text-gray-600 mt-2">Economical sedans for everyday city travel. Perfect for work commutes and shopping trips.</p>
-                <p class="mt-4 text-sm text-purple-600 font-semibold">From LKR 500 base fare</p>
+
+        <section class="max-w-5xl mx-auto relative z-10">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Standard Ride -->
+                <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-8 hover:border-yellow-400/30 transition-all duration-300 group hover:-translate-y-1.5 flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 bg-blue-500/10 border border-blue-500/20 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">🚕</div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-yellow-400 transition duration-200">Standard Ride</h3>
+                        <p class="text-slate-405 mt-3 text-sm leading-relaxed">Economical sedans for everyday city travel. Perfect for work commutes and shopping trips.</p>
+                    </div>
+                    <p class="mt-6 text-sm text-yellow-450 font-bold tracking-wide">From LKR 500 base fare</p>
+                </div>
+
+                <!-- Premium Ride -->
+                <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-8 hover:border-yellow-400/30 transition-all duration-300 group hover:-translate-y-1.5 flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 bg-purple-500/10 border border-purple-500/20 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">✨</div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-yellow-400 transition duration-200">Premium Ride</h3>
+                        <p class="text-slate-405 mt-3 text-sm leading-relaxed">Comfortable premium vehicles with extra legroom, quiet interiors, and curated amenities.</p>
+                    </div>
+                    <p class="mt-6 text-sm text-yellow-450 font-bold tracking-wide">1.5× standard fare</p>
+                </div>
+
+                <!-- XL / Group -->
+                <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-8 hover:border-yellow-400/30 transition-all duration-300 group hover:-translate-y-1.5 flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 bg-yellow-400/10 border border-yellow-400/20 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">👨‍👩‍👧‍👦</div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-yellow-400 transition duration-200">XL / Group</h3>
+                        <p class="text-slate-405 mt-3 text-sm leading-relaxed">Spacious multi-passenger vans for families, groups, and large travel luggage bags.</p>
+                    </div>
+                    <p class="mt-6 text-sm text-yellow-450 font-bold tracking-wide">2× standard fare</p>
+                </div>
+
+                <!-- Airport Transfer -->
+                <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-8 hover:border-yellow-400/30 transition-all duration-300 group hover:-translate-y-1.5 flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">✈️</div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-yellow-400 transition duration-200">Airport Transfer</h3>
+                        <p class="text-slate-405 mt-3 text-sm leading-relaxed">Reliable, stress-free pickups and drop-offs to Bandaranaike International Airport with luggage assistance.</p>
+                    </div>
+                    <p class="mt-6 text-sm text-emerald-400 font-bold tracking-wide flex items-center gap-1.5"><i class="fa-solid fa-circle-check"></i> Flight tracking included</p>
+                </div>
+
+                <!-- Corporate -->
+                <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-8 hover:border-yellow-400/30 transition-all duration-300 group hover:-translate-y-1.5 flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 bg-blue-500/10 border border-blue-500/20 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">🏢</div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-yellow-400 transition duration-200">Corporate</h3>
+                        <p class="text-slate-405 mt-3 text-sm leading-relaxed">Punctual corporate commuting, centralized monthly billing cycles, and enterprise account handlers.</p>
+                    </div>
+                    <p class="mt-6 text-sm text-yellow-450 font-bold tracking-wide flex items-center gap-1.5"><i class="fa-solid fa-briefcase"></i> Enterprise SLA support</p>
+                </div>
+
+                <!-- Premium Member -->
+                <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-8 hover:border-yellow-400/30 transition-all duration-300 group hover:-translate-y-1.5 flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 bg-rose-500/10 border border-rose-500/20 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">⭐</div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-yellow-400 transition duration-200">Premium Member</h3>
+                        <p class="text-slate-405 mt-3 text-sm leading-relaxed">Register as a premium VIP member and automatically unlock a 10% cash discount on every trip fare.</p>
+                    </div>
+                    <a th:href="@{/user/register}" class="mt-6 text-sm text-yellow-400 font-extrabold flex items-center gap-1 hover:text-yellow-350 hover:underline">
+                        Join now <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </a>
+                </div>
             </div>
-            <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition">
-                <div class="text-4xl mb-4">✨</div>
-                <h3 class="text-xl font-bold text-purple-700">Premium Ride</h3>
-                <p class="text-gray-600 mt-2">Comfortable premium vehicles with extra legroom and amenities.</p>
-                <p class="mt-4 text-sm text-purple-600 font-semibold">1.5× standard fare</p>
+
+            <div class="text-center mt-16">
+                <th:block th:if="${currentUser != null}">
+                    <a th:href="@{/book-ride}" class="btn-premium-yellow px-8 py-4 rounded-xl text-lg font-bold shadow-lg inline-flex items-center gap-2 hover:scale-105 duration-300">
+                        <i class="fa-solid fa-route"></i> Book Your Ride Now
+                    </a>
+                </th:block>
+                <th:block th:if="${currentUser == null}">
+                    <a th:href="@{/user/login}" class="btn-premium-yellow px-8 py-4 rounded-xl text-lg font-bold shadow-lg inline-flex items-center gap-2 hover:scale-105 duration-300">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i> Login to Book
+                    </a>
+                </th:block>
             </div>
-            <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition">
-                <div class="text-4xl mb-4">👨‍👩‍👧‍👦</div>
-                <h3 class="text-xl font-bold text-purple-700">XL / Group</h3>
-                <p class="text-gray-600 mt-2">Spacious vans for families, groups, and extra luggage.</p>
-                <p class="mt-4 text-sm text-purple-600 font-semibold">2× standard fare</p>
-            </div>
-            <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition">
-                <div class="text-4xl mb-4">✈️</div>
-                <h3 class="text-xl font-bold text-purple-700">Airport Transfer</h3>
-                <p class="text-gray-600 mt-2">Reliable pickups and drop-offs to Bandaranaike International Airport.</p>
-            </div>
-            <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition">
-                <div class="text-4xl mb-4">🏢</div>
-                <h3 class="text-xl font-bold text-purple-700">Corporate</h3>
-                <p class="text-gray-600 mt-2">Monthly billing and dedicated accounts for businesses.</p>
-            </div>
-            <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition">
-                <div class="text-4xl mb-4">⭐</div>
-                <h3 class="text-xl font-bold text-purple-700">Premium Membership</h3>
-                <p class="text-gray-600 mt-2">Register as a premium member and save 10% on every booking.</p>
-                <a th:href="@{/user/register}" class="inline-block mt-4 text-purple-600 font-semibold hover:underline">Join now →</a>
-            </div>
-        </div>
-        <div class="text-center mt-12">
-            <a th:href="@{/book-ride}" class="bg-yellow-400 text-gray-900 font-bold px-8 py-4 rounded-lg hover:bg-yellow-300"
-               th:if="${currentUser != null}">Book a Ride</a>
-            <a th:href="@{/user/login}" class="bg-yellow-400 text-gray-900 font-bold px-8 py-4 rounded-lg hover:bg-yellow-300"
-               th:if="${currentUser == null}">Login to Book</a>
-        </div>
-    </section>
+        </section>
+    </div>
 </main>
 </html>

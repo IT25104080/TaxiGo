@@ -50,18 +50,45 @@ public class BookingController {
             return "redirect:/user/login";
         }
 
-        boolean premium = user instanceof PremiumPassenger;
-        double fare = FareCalculator.estimate(pickup, dropoff, vehicleType, premium);
+        if (pickup == null || pickup.isBlank() || dropoff == null || dropoff.isBlank()) {
+            model.addAttribute("error", "Pickup and Drop-off locations are required.");
+            model.addAttribute("user", UserView.from(user));
+            return "book-ride";
+        }
+
+        LocalDate parsedDate;
+        try {
+            parsedDate = LocalDate.parse(pickupDate);
+        } catch (Exception e) {
+            model.addAttribute("error", "Please select a valid date.");
+            model.addAttribute("user", UserView.from(user));
+            return "book-ride";
+        }
+
+        if (parsedDate.isBefore(LocalDate.now())) {
+            model.addAttribute("error", "Pickup date cannot be in the past.");
+            model.addAttribute("user", UserView.from(user));
+            return "book-ride";
+        }
 
         LocalTime parsedTime = (pickupTime == null || pickupTime.isBlank())
                 ? LocalTime.now() : LocalTime.parse(pickupTime);
+
+        if (parsedDate.equals(LocalDate.now()) && parsedTime.isBefore(LocalTime.now().minusMinutes(5))) {
+            model.addAttribute("error", "Pickup time must be in the future.");
+            model.addAttribute("user", UserView.from(user));
+            return "book-ride";
+        }
+
+        boolean premium = user instanceof PremiumPassenger;
+        double fare = FareCalculator.estimate(pickup, dropoff, vehicleType, premium);
 
         Booking booking = new Booking(
                 "BK" + UUID.randomUUID().toString().replace("-", "").substring(0, 8),
                 user.getUserId(),
                 pickup.trim(),
                 dropoff.trim(),
-                LocalDate.parse(pickupDate),
+                parsedDate,
                 parsedTime,
                 vehicleType,
                 "PENDING_PAYMENT",

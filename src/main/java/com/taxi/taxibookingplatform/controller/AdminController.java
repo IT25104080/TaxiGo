@@ -109,6 +109,23 @@ public class AdminController {
         if (isNotAdmin(session)) {
             return "redirect:/user/login";
         }
+
+        if (modelName == null || modelName.isBlank()) {
+            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Vehicle model name is required.", java.nio.charset.StandardCharsets.UTF_8);
+        }
+        if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidLicensePlate(licensePlate)) {
+            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Invalid license plate format. Expected standard Sri Lankan format (e.g., WP CAD-4567 or CAD-4567).", java.nio.charset.StandardCharsets.UTF_8);
+        }
+        if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidName(driverName)) {
+            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Chauffeur name must contain only alphabetic characters and spaces (2 to 50 characters).", java.nio.charset.StandardCharsets.UTF_8);
+        }
+        if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidPhone(driverPhone)) {
+            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Please enter a valid Sri Lankan chauffeur phone number.", java.nio.charset.StandardCharsets.UTF_8);
+        }
+        if (ratePerKm <= 0) {
+            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Rate per kilometer must be a positive number greater than 0.", java.nio.charset.StandardCharsets.UTF_8);
+        }
+
         String img = (imageUrl == null) ? "" : imageUrl.trim();
         String id = "TX" + (1000 + TaxiFileHandler.getAllTaxis().size() + 1);
         Taxi taxi = new Taxi(id, modelName, vehicleType, licensePlate, driverName, driverPhone, ratePerKm, status, img);
@@ -131,6 +148,23 @@ public class AdminController {
         if (isNotAdmin(session)) {
             return "redirect:/user/login";
         }
+
+        if (modelName == null || modelName.isBlank()) {
+            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Vehicle model name is required.", java.nio.charset.StandardCharsets.UTF_8);
+        }
+        if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidLicensePlate(licensePlate)) {
+            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Invalid license plate format. Expected standard Sri Lankan format (e.g., WP CAD-4567 or CAD-4567).", java.nio.charset.StandardCharsets.UTF_8);
+        }
+        if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidName(driverName)) {
+            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Chauffeur name must contain only alphabetic characters and spaces (2 to 50 characters).", java.nio.charset.StandardCharsets.UTF_8);
+        }
+        if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidPhone(driverPhone)) {
+            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Please enter a valid Sri Lankan chauffeur phone number.", java.nio.charset.StandardCharsets.UTF_8);
+        }
+        if (ratePerKm <= 0) {
+            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Rate per kilometer must be a positive number greater than 0.", java.nio.charset.StandardCharsets.UTF_8);
+        }
+
         String img = (imageUrl == null) ? "" : imageUrl.trim();
         Taxi taxi = new Taxi(id, modelName, vehicleType, licensePlate, driverName, driverPhone, ratePerKm, status, img);
         TaxiFileHandler.updateTaxi(taxi);

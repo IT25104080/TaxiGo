@@ -2,16 +2,23 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{fragments/layout :: html(~{::title}, ~{::main})}">
 <head><title th:fragment="title">Terms of Service – TaxiGo</title></head>
-<main th:fragment="main">
-    <section class="py-16 container mx-auto px-4 max-w-3xl">
-        <h1 class="text-3xl font-bold text-purple-700 mb-6">Terms of Service</h1>
-        <div class="bg-white rounded-xl shadow p-8 text-gray-600 space-y-4">
-            <p>By using TaxiGo you agree to these terms. You must be 18+ to create an account.</p>
-            <p>Fares shown at booking are estimates; final charges may vary based on actual route and waiting time.</p>
-            <p>Users are responsible for accurate pickup details. Repeated no-shows may result in account suspension.</p>
-            <p>TaxiGo is not liable for delays caused by traffic, weather, or events beyond our control.</p>
-            <p>We reserve the right to update these terms. Continued use constitutes acceptance.</p>
+<main th:fragment="main" class="bg-slate-950 text-slate-100 min-h-screen py-16 relative overflow-hidden flex items-center justify-center">
+    <!-- Glowing background accents -->
+    <div class="absolute w-[450px] h-[450px] rounded-full bg-purple-500/10 blur-[130px] top-[10%] left-[10%] z-0"></div>
+    <div class="absolute w-[450px] h-[450px] rounded-full bg-yellow-400/5 blur-[130px] bottom-[15%] right-[10%] z-0"></div>
+
+    <div class="container mx-auto px-6 flex items-center justify-center relative z-10">
+        <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-8 shadow-2xl w-full max-w-2xl relative z-10">
+            <h1 class="text-3xl font-black text-center text-white mb-6 font-heading tracking-tight">Terms of <span class="bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent">Service</span></h1>
+            
+            <div class="text-slate-350 space-y-4 text-sm leading-relaxed border-t border-slate-800/80 pt-6">
+                <p>By registering and using TaxiGo passenger platform services, you explicitly agree to comply with our Terms of Service. You must be 18+ years of age to register an active profile.</p>
+                <p>Fares shown at initial booking are verified system estimations; final travel charges may fluctuate based on actual route telemetry, active traffic delays, and vehicle waiting times.</p>
+                <p>Passengers hold full accountability for inputting highly accurate pickup destination coordinates. Repeated no-shows or severe dispatcher coordination neglect may result in direct account suspension.</p>
+                <p>TaxiGo operates as a dispatching agency and is not liable for delayed trip schedules caused by extreme gridlock traffic, severe weather conditions, or force majeure events beyond our control.</p>
+                <p>We reserve the right to revise these terms as needed. Continued active passenger platform usage constitutes explicit acceptance of any modified rules.</p>
+            </div>
         </div>
-    </section>
+    </div>
 </main>
 </html>

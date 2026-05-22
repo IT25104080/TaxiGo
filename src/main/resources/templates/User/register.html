@@ -20,6 +20,7 @@
                 <div>
                     <label class="block text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-wider">Full Name</label>
                     <input type="text" name="name" placeholder="Full Name" required
+                           pattern="[A-Za-z\s]{2,50}" title="Name must contain only alphabetic characters and spaces (2 to 50 characters)."
                            class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition duration-200">
                 </div>
 
@@ -32,12 +33,14 @@
                 <div>
                     <label class="block text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-wider">Phone Number</label>
                     <input type="tel" name="phone" placeholder="+94 77 123 4567" required
+                           pattern="(?:\+94|0)?[1-9][0-9]{8}" title="Please enter a valid Sri Lankan phone number (e.g. 0771234567 or +94771234567)."
                            class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition duration-200">
                 </div>
 
                 <div>
                     <label class="block text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-wider">Secure Password</label>
                     <input type="password" name="password" placeholder="••••••••" required
+                           pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_#]).{8,}" title="Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one numeric digit, and one special character (@$!%*?&_#)."
                            class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition duration-200">
                 </div>
 

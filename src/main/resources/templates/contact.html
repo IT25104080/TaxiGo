@@ -32,10 +32,14 @@
                     });
                 </script>
 
+                <!-- Alert States -->
+                <div th:if="${error}" class="bg-rose-500/10 text-rose-450 border border-rose-500/20 p-3.5 mb-5 rounded-xl text-xs font-semibold flex items-center gap-2" th:text="${error}"></div>
+
                 <form th:action="@{/contact}" method="post" class="space-y-4">
                     <div>
                         <label class="block text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-wider">Your Name</label>
                         <input type="text" name="name" placeholder="Your Name" required
+                               pattern="[A-Za-z\s]{2,50}" title="Name must contain only alphabetic characters and spaces (2 to 50 characters)."
                                class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition duration-200">
                     </div>
 

@@ -71,6 +71,23 @@ public class UserController {
             @RequestParam(defaultValue = "regular") String userType,
             Model model) throws IOException {
 
+        if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidName(name)) {
+            model.addAttribute("error", "Name must contain only alphabetic characters and spaces (2 to 50 characters).");
+            return "User/register";
+        }
+        if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidEmail(email)) {
+            model.addAttribute("error", "Please provide a valid email address (e.g., name@domain.com).");
+            return "User/register";
+        }
+        if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidPhone(phone)) {
+            model.addAttribute("error", "Please enter a valid Sri Lankan phone number (e.g., 0771234567 or +94771234567).");
+            return "User/register";
+        }
+        if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidPassword(password)) {
+            model.addAttribute("error", "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one numeric digit, and one special character.");
+            return "User/register";
+        }
+
         if (UserFileHandler.getUserByEmail(email) != null) {
             model.addAttribute("error", "An account with this email already exists");
             return "User/register";
@@ -129,6 +146,39 @@ public class UserController {
         User existing = requireLoggedInUser(session);
         if (existing == null) {
             return "redirect:/user/login";
+        }
+
+        if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidName(name)) {
+            model.addAttribute("error", "Name must contain only alphabetic characters and spaces (2 to 50 characters).");
+            model.addAttribute("user", UserView.from(existing));
+            model.addAttribute("bookings", BookingFileHandler.getBookingsByUserId(existing.getUserId()));
+            return "User/profile";
+        }
+        if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidEmail(email)) {
+            model.addAttribute("error", "Please provide a valid email address.");
+            model.addAttribute("user", UserView.from(existing));
+            model.addAttribute("bookings", BookingFileHandler.getBookingsByUserId(existing.getUserId()));
+            return "User/profile";
+        }
+        if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidPhone(phone)) {
+            model.addAttribute("error", "Please enter a valid Sri Lankan phone number.");
+            model.addAttribute("user", UserView.from(existing));
+            model.addAttribute("bookings", BookingFileHandler.getBookingsByUserId(existing.getUserId()));
+            return "User/profile";
+        }
+        if (password != null && !password.isBlank() && !com.taxi.taxibookingplatform.util.ValidationUtils.isValidPassword(password)) {
+            model.addAttribute("error", "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one numeric digit, and one special character.");
+            model.addAttribute("user", UserView.from(existing));
+            model.addAttribute("bookings", BookingFileHandler.getBookingsByUserId(existing.getUserId()));
+            return "User/profile";
+        }
+
+        User duplicate = UserFileHandler.getUserByEmail(email);
+        if (duplicate != null && !duplicate.getUserId().equals(existing.getUserId())) {
+            model.addAttribute("error", "An account with this email already exists");
+            model.addAttribute("user", UserView.from(existing));
+            model.addAttribute("bookings", BookingFileHandler.getBookingsByUserId(existing.getUserId()));
+            return "User/profile";
         }
 
         String newPassword = (password != null && !password.isBlank())
