@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: html(~{::title}, ~{::main})}">
+<head>
+    <title th:fragment="title">TaxiGo – Premium Ride Checkout</title>
+</head>
+<main th:fragment="main" class="bg-slate-950 text-slate-100 min-h-screen py-16 relative overflow-hidden">
+    <!-- Glowing background accents -->
+    <div class="absolute w-[450px] h-[450px] rounded-full bg-purple-500/10 blur-[130px] top-[10%] left-[10%] z-0"></div>
+    <div class="absolute w-[450px] h-[450px] rounded-full bg-yellow-400/5 blur-[130px] bottom-[15%] right-[10%] z-0"></div>
+
+    <div class="container mx-auto px-6 relative z-10">
+        <!-- Hero Header -->
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <span class="text-xs font-bold text-yellow-400 uppercase tracking-widest bg-yellow-400/10 border border-yellow-400/20 rounded-full px-4 py-1.5 animate-pulse">Checkout Center</span>
+            <h1 class="text-4xl md:text-5xl font-black text-white mt-4 font-heading tracking-tight">Confirm & <span class="bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent">Book Ride</span></h1>
+            <p class="text-slate-400 text-sm mt-3 font-sans">
+                Review your passenger profile, verify travel details, and finalize simulated checkout payment for instant dispatch.
+            </p>
+        </div>
+
+        <!-- Split Layout Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-6xl mx-auto">
+            
+            <!-- Left Column: Passenger Profile & Visual Payment Checkout (Lg: col-span-5) -->
+            <div class="lg:col-span-5 flex flex-col gap-6">
+                <!-- Passenger Card -->
+                <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl">
+                    <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-800 pb-3">
+                        <i class="fa-regular fa-circle-user text-yellow-400"></i> Passenger Profile Details
+                    </h3>
+                    
+                    <div class="grid grid-cols-2 gap-4 text-xs">
+                        <div>
+                            <span class="text-[9px] uppercase font-bold text-slate-500 tracking-wider block mb-0.5">Passenger Name</span>
+                            <p class="font-bold text-white" th:text="${user.name}">Buddhima Rajapaksha</p>
+                        </div>
+                        <div>
+                            <span class="text-[9px] uppercase font-bold text-slate-500 tracking-wider block mb-0.5">Direct Line</span>
+                            <p class="font-semibold text-slate-300" th:text="${user.phone}">+94 77 123 4567</p>
+                        </div>
+                        <div class="col-span-2">
+                            <span class="text-[9px] uppercase font-bold text-slate-500 tracking-wider block mb-0.5">Passenger Email</span>
+                            <p class="font-semibold text-slate-350" th:text="${user.email}">buddhima@gmail.com</p>
+                        </div>
+                    </div>
+
+                    <!-- Discount indicator -->
+                    <div th:if="${user.userType == 'premium'}" class="mt-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-450 p-3.5 rounded-xl flex items-center gap-2.5">
+                        <i class="fa-solid fa-circle-check text-base text-emerald-400"></i>
+                        <span class="text-[11px] font-semibold">10% Premium Discount applied automatically!</span>
+                    </div>
+                </div>
+
+                <!-- TaxiGo Ride Assurance Card -->
+                <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl">
+                    <h3 class="text-base font-bold text-white mb-5 flex items-center gap-2 border-b border-slate-800 pb-3">
+                        <i class="fa-solid fa-shield-halved text-yellow-400"></i> TaxiGo Ride Assurance
+                    </h3>
+
+                    <div class="flex flex-col gap-4 text-xs">
+                        <div class="flex gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-yellow-400/10 flex items-center justify-center text-yellow-450 shrink-0">
+                                <i class="fa-solid fa-user-tie"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white mb-0.5">Vetted Professional Chauffeurs</h4>
+                                <p class="text-slate-400 leading-relaxed">All drivers undergo rigorous background verification and regular passenger rating audits.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400 shrink-0">
+                                <i class="fa-solid fa-clock-rotate-left"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white mb-0.5">Punctuality Guarantee</h4>
+                                <p class="text-slate-400 leading-relaxed">Enjoy zero waiting times. Our dispatch system monitors flights and live traffic around-the-clock.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-450 shrink-0">
+                                <i class="fa-solid fa-shield-heart"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white mb-0.5">Simulated Escrow Protection</h4>
+                                <p class="text-slate-400 leading-relaxed">Your payment is held safely until you reach your drop-off destination safely.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Itinerary Details Booking Form (Lg: col-span-7) -->
+            <div class="lg:col-span-7">
+                <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-8 shadow-2xl">
+                    <h3 class="text-lg font-bold text-white mb-6 border-b border-slate-800 pb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-map-location-dot text-purple-400"></i> Set Ride Specifications
+                    </h3>
+
+                    <form th:action="@{/book-ride}" method="post" class="flex flex-col gap-5">
+                        
+                        <!-- Pickup -->
+                        <div>
+                            <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Pickup Location</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400">
+                                    <i class="fa-solid fa-circle text-[8px] text-yellow-400"></i>
+                                </span>
+                                <input type="text" name="pickup" required placeholder="e.g. Colombo Fort Railway Station" 
+                                       class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl pl-10 pr-4 py-3 text-sm text-white focus:outline-none transition duration-200">
+                            </div>
+                        </div>
+
+                        <!-- Dropoff -->
+                        <div>
+                            <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Drop-off Destination</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400">
+                                    <i class="fa-solid fa-location-dot text-xs text-purple-400"></i>
+                                </span>
+                                <input type="text" name="dropoff" required placeholder="e.g. Mount Lavinia Beach" 
+                                       class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl pl-10 pr-4 py-3 text-sm text-white focus:outline-none transition duration-200">
+                            </div>
+                        </div>
+
+                        <!-- Departure Date -->
+                        <div>
+                            <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Departure Date</label>
+                            <input type="date" name="pickupDate" required 
+                                   class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition duration-200">
+                        </div>
+
+                        <!-- Vehicle Tier Select -->
+                        <div>
+                            <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Vehicle Class Tier</label>
+                            <select id="vehicleType" name="vehicleType" required 
+                                    class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition duration-200">
+                                <option value="standard">Standard – Sedan Class (100 LKR/KM base)</option>
+                                <option value="premium">Premium – Comfort SUV (1.5× luxury modifier)</option>
+                                <option value="xl">XL Cruiser – Group Van (2.0× capacity modifier)</option>
+                            </select>
+                        </div>
+
+                        <!-- Notes -->
+                        <div>
+                            <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Driver Instructions (Optional)</label>
+                            <textarea name="notes" rows="2" placeholder="e.g. Flight code, landmarks, special requests..." 
+                                      class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition duration-200"></textarea>
+                        </div>
+
+                        <!-- Book and submit -->
+                        <div class="border-t border-slate-800 mt-4 pt-6">
+                            <button type="submit" 
+                                    class="w-full bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-350 hover:to-amber-450 text-slate-950 font-extrabold text-sm py-4 rounded-xl shadow-lg hover:shadow-yellow-500/20 hover:scale-[1.01] transition-all duration-300 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-credit-card"></i> Proceed to Payment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+</html>

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: html(~{::title}, ~{::main})}">
+<head>
+    <title th:fragment="title">TaxiGo – Executive Admin Control</title>
+</head>
+<main th:fragment="main" class="bg-slate-950 text-slate-100 min-h-screen py-12 relative overflow-hidden">
+    <!-- Background glowing accents -->
+    <div class="absolute w-[400px] h-[400px] rounded-full bg-purple-500/5 blur-[120px] top-[-50px] left-[5%] z-0"></div>
+    <div class="absolute w-[400px] h-[400px] rounded-full bg-yellow-400/5 blur-[120px] bottom-[100px] right-[5%] z-0"></div>
+
+    <div class="container mx-auto px-6 relative z-10">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between border-b border-slate-800 pb-8 mb-10 gap-4">
+            <div>
+                <span class="text-xs font-bold text-yellow-400 uppercase tracking-widest bg-yellow-400/10 border border-yellow-400/20 rounded-full px-4.5 py-1">Operational Center</span>
+                <h1 class="text-3xl md:text-5xl font-black text-white mt-3 font-heading tracking-tight">Admin <span class="bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent">Control Center</span></h1>
+            </div>
+            <div>
+                <a th:href="@{/admin/logout}" class="bg-rose-950/40 text-rose-400 border border-rose-900/40 hover:bg-rose-900 hover:text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Invalidate Session
+                </a>
+            </div>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-12">
+            <!-- Metric 1 -->
+            <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-850 p-6 rounded-2xl shadow-xl flex items-center gap-5">
+                <div class="w-14 h-14 bg-blue-500/10 border border-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400 text-2xl">
+                    <i class="fa-solid fa-chart-simple"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-slate-400">Total Bookings</p>
+                    <p class="text-2xl md:text-3xl font-extrabold text-white mt-1" th:text="${totalBookings}">0</p>
+                </div>
+            </div>
+
+            <!-- Metric 2 -->
+            <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-850 p-6 rounded-2xl shadow-xl flex items-center gap-5">
+                <div class="w-14 h-14 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex items-center justify-center text-amber-400 text-2xl">
+                    <i class="fa-solid fa-hourglass-half"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-slate-400">Pending</p>
+                    <p class="text-2xl md:text-3xl font-extrabold text-white mt-1" th:text="${pendingBookings}">0</p>
+                </div>
+            </div>
+
+            <!-- Metric 3 -->
+            <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-850 p-6 rounded-2xl shadow-xl flex items-center gap-5">
+                <div class="w-14 h-14 bg-purple-500/10 border border-purple-500/20 rounded-2xl flex items-center justify-center text-purple-400 text-2xl">
+                    <i class="fa-solid fa-road"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-slate-400">Active Rides</p>
+                    <p class="text-2xl md:text-3xl font-extrabold text-white mt-1" th:text="${activeBookings}">0</p>
+                </div>
+            </div>
+
+            <!-- Metric 4 -->
+            <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-850 p-6 rounded-2xl shadow-xl flex items-center gap-5">
+                <div class="w-14 h-14 bg-teal-500/10 border border-teal-500/20 rounded-2xl flex items-center justify-center text-teal-400 text-2xl">
+                    <i class="fa-solid fa-car"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-slate-400">Fleet Active</p>
+                    <p class="text-2xl md:text-3xl font-extrabold text-white mt-1">
+                        <span th:text="${availableTaxis}">0</span>/<span th:text="${totalTaxis}" class="text-slate-500 text-lg">0</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Metric 5 -->
+            <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-850 p-6 rounded-2xl shadow-xl flex items-center gap-5">
+                <div class="w-14 h-14 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center justify-center text-emerald-400 text-2xl">
+                    <i class="fa-solid fa-envelope-open-text"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-slate-400">Messages</p>
+                    <p class="text-2xl md:text-3xl font-extrabold text-white mt-1" th:text="${totalMessages}">0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Content Tabs -->
+        <div class="bg-slate-900/40 border border-slate-850/80 rounded-3xl p-6 shadow-2xl">
+            <!-- Tabs Headers -->
+            <div class="flex items-center gap-4 border-b border-slate-800 pb-4 mb-8 overflow-x-auto select-none">
+                <button onclick="switchTab('tab-bookings')" id="btn-tab-bookings" class="tab-btn px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 bg-yellow-400 text-slate-950 shadow-lg">
+                    <i class="fa-solid fa-calendar-days"></i> Booking Database
+                </button>
+                <button onclick="switchTab('tab-users')" id="btn-tab-users" class="tab-btn px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/40">
+                    <i class="fa-solid fa-users-gear"></i> User Directory (<span th:text="${totalUsers}">0</span>)
+                </button>
+                <button onclick="switchTab('tab-taxis')" id="btn-tab-taxis" class="tab-btn px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/40">
+                    <i class="fa-solid fa-car"></i> Manage Fleet (<span th:text="${totalTaxis}">0</span>)
+                </button>
+                <button onclick="switchTab('tab-messages')" id="btn-tab-messages" class="tab-btn px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/40">
+                    <i class="fa-solid fa-envelope-open-text"></i> Feedback Messages
+                </button>
+            </div>
+
+            <!-- Tab 1: Bookings -->
+            <div id="tab-bookings" class="tab-content transition-all duration-300 animate-fade-in">
+                <div class="overflow-x-auto rounded-2xl border border-slate-850">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-900 text-slate-300 text-xs font-bold uppercase tracking-wider border-b border-slate-800">
+                            <tr>
+                                <th class="px-6 py-4">Booking ID</th>
+                                <th class="px-6 py-4">Route Info</th>
+                                <th class="px-6 py-4">Date & Time</th>
+                                <th class="px-6 py-4">Vehicle</th>
+                                <th class="px-6 py-4">Fare</th>
+                                <th class="px-6 py-4 text-center">Status</th>
+                                <th class="px-6 py-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/60 bg-slate-950/40">
+                            <tr th:each="b : ${bookings}" class="hover:bg-slate-900/35 transition duration-150">
+                                <td class="px-6 py-4 font-mono font-bold text-yellow-400" th:text="${b.bookingId}">BKG1000</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex flex-col gap-0.5">
+                                        <span class="text-white font-medium flex items-center gap-1.5"><i class="fa-solid fa-location-dot text-yellow-450 text-[10px]"></i> <span th:text="${b.pickup}">Colombo</span></span>
+                                        <span class="text-slate-400 flex items-center gap-1.5"><i class="fa-solid fa-location-arrow text-purple-400 text-[10px]"></i> <span th:text="${b.dropoff}">Kandy</span></span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex flex-col gap-0.5">
+                                        <span class="text-slate-200" th:text="${b.pickupDate}">2026-05-22</span>
+                                        <span class="text-xs text-slate-500" th:text="${b.pickupTime}">14:30</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 uppercase text-xs font-semibold text-slate-300" th:text="${b.vehicleType}">Sedan</td>
+                                <td class="px-6 py-4 font-bold text-white" th:text="'LKR ' + ${b.fare}">LKR 0</td>
+                                <td class="px-6 py-4 text-center">
+                                    <!-- Status Badges -->
+                                    <span th:if="${#strings.equalsIgnoreCase(b.status, 'PENDING')}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                                        <i class="fa-solid fa-circle text-[6px]"></i> Pending
+                                    </span>
+                                    <span th:if="${#strings.equalsIgnoreCase(b.status, 'PENDING_PAYMENT')}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-450 border border-amber-500/20">
+                                        <i class="fa-solid fa-circle text-[6px]"></i> Unpaid Checkout
+                                    </span>
+                                    <span th:if="${#strings.equalsIgnoreCase(b.status, 'APPROVED') or #strings.equalsIgnoreCase(b.status, 'CONFIRMED')}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                                        <i class="fa-solid fa-circle text-[6px]"></i> Confirmed
+                                    </span>
+                                    <span th:if="${#strings.equalsIgnoreCase(b.status, 'COMPLETED')}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-450 border border-blue-500/20">
+                                        <i class="fa-solid fa-circle text-[6px]"></i> Completed
+                                    </span>
+                                    <span th:if="${#strings.equalsIgnoreCase(b.status, 'CANCELLED')}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/20">
+                                        <i class="fa-solid fa-circle text-[6px]"></i> Cancelled
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <!-- Pending actions -->
+                                        <th:block th:if="${#strings.equalsIgnoreCase(b.status, 'PENDING')}">
+                                            <form th:action="@{/admin/bookings/update-status}" method="post" class="inline">
+                                                <input type="hidden" name="bookingId" th:value="${b.bookingId}">
+                                                <input type="hidden" name="status" value="APPROVED">
+                                                <button type="submit" class="bg-purple-600 hover:bg-purple-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow-md transition flex items-center gap-1">
+                                                    <i class="fa-solid fa-check"></i> Approve
+                                                </button>
+                                            </form>
+                                            <form th:action="@{/admin/bookings/update-status}" method="post" class="inline">
+                                                <input type="hidden" name="bookingId" th:value="${b.bookingId}">
+                                                <input type="hidden" name="status" value="CANCELLED">
+                                                <button type="submit" class="bg-rose-950/40 text-rose-450 hover:bg-rose-900 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition border border-rose-900/40">
+                                                    Cancel
+                                                </button>
+                                            </form>
+                                        </th:block>
+                                        
+                                        <!-- Approved or Confirmed actions -->
+                                        <th:block th:if="${#strings.equalsIgnoreCase(b.status, 'APPROVED') or #strings.equalsIgnoreCase(b.status, 'CONFIRMED')}">
+                                            <form th:action="@{/admin/bookings/update-status}" method="post" class="inline">
+                                                <input type="hidden" name="bookingId" th:value="${b.bookingId}">
+                                                <input type="hidden" name="status" value="COMPLETED">
+                                                <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow-md transition flex items-center gap-1">
+                                                    <i class="fa-solid fa-circle-check"></i> Complete
+                                                </button>
+                                            </form>
+                                            <form th:action="@{/admin/bookings/update-status}" method="post" class="inline">
+                                                <input type="hidden" name="bookingId" th:value="${b.bookingId}">
+                                                <input type="hidden" name="status" value="CANCELLED">
+                                                <button type="submit" class="bg-rose-950/40 text-rose-450 hover:bg-rose-900 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition border border-rose-900/40">
+                                                    Cancel
+                                                </button>
+                                            </form>
+                                        </th:block>
+                                        
+                                        <span th:if="${#strings.equalsIgnoreCase(b.status, 'COMPLETED') or #strings.equalsIgnoreCase(b.status, 'CANCELLED') or #strings.equalsIgnoreCase(b.status, 'PENDING_PAYMENT')}" class="text-slate-500 text-xs italic">No actions available</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(bookings)}">
+                                <td colspan="7" class="px-6 py-12 text-center text-slate-550 font-medium">No bookings logged in the system database.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tab 2: Users -->
+            <div id="tab-users" class="tab-content hidden transition-all duration-300 animate-fade-in">
+                <div class="overflow-x-auto rounded-2xl border border-slate-850">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-900 text-slate-300 text-xs font-bold uppercase tracking-wider border-b border-slate-800">
+                            <tr>
+                                <th class="px-6 py-4">User ID</th>
+                                <th class="px-6 py-4">Full Name</th>
+                                <th class="px-6 py-4">Email</th>
+                                <th class="px-6 py-4">Phone Number</th>
+                                <th class="px-6 py-4">Account Tier</th>
+                                <th class="px-6 py-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/60 bg-slate-950/40">
+                            <tr th:each="u : ${users}" class="hover:bg-slate-900/35 transition duration-150">
+                                <td class="px-6 py-4 font-mono text-xs text-slate-400" th:text="${u.userId}">USR123</td>
+                                <td class="px-6 py-4 font-semibold text-white" th:text="${u.name}">Passenger Name</td>
+                                <td class="px-6 py-4 text-slate-300" th:text="${u.email}">email@taxigo.lk</td>
+                                <td class="px-6 py-4 text-slate-400" th:text="${u.phone}">+94 00 000 0000</td>
+                                <td class="px-6 py-4">
+                                    <span th:if="${u instanceof T(com.taxi.taxibookingplatform.model.PremiumPassenger)}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-yellow-400/10 text-yellow-400 border border-yellow-400/20">
+                                        <i class="fa-solid fa-crown text-[10px]"></i> Premium Gold
+                                    </span>
+                                    <span th:if="${u instanceof T(com.taxi.taxibookingplatform.model.Passenger)}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700">
+                                        Standard Rider
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <form th:action="@{'/admin/users/delete/' + ${u.userId}}" method="post" onsubmit="return confirm('Are you sure you want to terminate this user account permanently?');" class="inline">
+                                        <button type="submit" class="bg-rose-950/40 text-rose-450 hover:bg-rose-600 hover:text-white border border-rose-900/40 p-2 rounded-lg transition duration-200" title="Delete User">
+                                            <i class="fa-regular fa-trash-can text-sm"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(users)}">
+                                <td colspan="6" class="px-6 py-12 text-center text-slate-550 font-medium">No registered users in the database.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tab 4: Fleet Manager -->
+            <div id="tab-taxis" class="tab-content hidden transition-all duration-300 animate-fade-in">
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                    <!-- Left: Taxis Table -->
+                    <div class="xl:col-span-2 overflow-x-auto rounded-2xl border border-slate-850">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-900 text-slate-300 text-xs font-bold uppercase tracking-wider border-b border-slate-800">
+                                <tr>
+                                    <th class="px-6 py-4">ID</th>
+                                    <th class="px-6 py-4">Model & Plate</th>
+                                    <th class="px-6 py-4">Chauffeur</th>
+                                    <th class="px-6 py-4">Class</th>
+                                    <th class="px-6 py-4">Rate</th>
+                                    <th class="px-6 py-4 text-center">Status</th>
+                                    <th class="px-6 py-4 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800/60 bg-slate-950/40">
+                                <tr th:each="t : ${taxis}" class="hover:bg-slate-900/35 transition duration-150">
+                                    <td class="px-6 py-4 font-mono font-bold text-yellow-400 text-xs" th:text="${t.id}">TX1001</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex flex-col gap-0.5">
+                                            <span class="text-white font-semibold" th:text="${t.model}">Toyota Prius</span>
+                                            <span class="text-[10px] text-slate-500 font-mono tracking-wider" th:text="${t.licensePlate}">WP CAD-4567</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex flex-col gap-0.5">
+                                            <span class="text-slate-200" th:text="${t.driverName}">Rohan Perera</span>
+                                            <span class="text-xs text-slate-500 font-mono" th:text="${t.driverPhone}">+94 77 123 4567</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span th:if="${#strings.equalsIgnoreCase(t.vehicleType, 'SEDAN')}" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">SEDAN</span>
+                                        <span th:if="${#strings.equalsIgnoreCase(t.vehicleType, 'SUV')}" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/10 text-purple-400 border border-purple-500/20">SUV</span>
+                                        <span th:if="${#strings.equalsIgnoreCase(t.vehicleType, 'LUXURY')}" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-yellow-450/10 text-yellow-450 border border-yellow-400/20">LUXURY</span>
+                                    </td>
+                                    <td class="px-6 py-4 font-semibold text-slate-200" th:text="${t.ratePerKm} + ' LKR'">100 LKR</td>
+                                    <td class="px-6 py-4 text-center">
+                                        <span th:if="${#strings.equalsIgnoreCase(t.status, 'AVAILABLE')}" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Available</span>
+                                        <span th:if="${!#strings.equalsIgnoreCase(t.status, 'AVAILABLE')}" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/10 text-rose-450 border border-rose-500/20">Busy</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right flex justify-end gap-2">
+                                        <!-- Edit Button -->
+                                        <button type="button" 
+                                                th:onclick="openUpdateModal([[${t.id}]], [[${t.model}]], [[${t.vehicleType}]], [[${t.licensePlate}]], [[${t.driverName}]], [[${t.driverPhone}]], [[${t.ratePerKm}]], [[${t.status}]], [[${t.imageUrl}]])"
+                                                class="bg-yellow-400/10 text-yellow-400 hover:bg-yellow-400 hover:text-slate-950 border border-yellow-400/20 p-2 rounded-lg transition duration-200"
+                                                title="Edit Specifications">
+                                            <i class="fa-regular fa-pen-to-square text-sm"></i>
+                                        </button>
+                                        <!-- Delete Button -->
+                                        <form th:action="@{'/admin/taxis/delete/' + ${t.id}}" method="post" onsubmit="return confirm('Remove this vehicle from the active fleet database?');" class="inline">
+                                            <button type="submit" class="bg-rose-950/40 text-rose-450 hover:bg-rose-650 hover:text-white border border-rose-900/40 p-2 rounded-lg transition duration-200" title="Delete Vehicle">
+                                                <i class="fa-regular fa-trash-can text-sm"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(taxis)}">
+                                    <td colspan="7" class="px-6 py-12 text-center text-slate-550 font-medium">No vehicles registered in the fleet database.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Right: Add New Vehicle Form -->
+                    <div class="bg-slate-950/30 border border-slate-850 rounded-2xl p-6">
+                        <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-2"><i class="fa-solid fa-square-plus text-yellow-400"></i> Register Vehicle</h3>
+                        
+                        <form th:action="@{/admin/taxis/add}" method="post" class="flex flex-col gap-4">
+                            <div>
+                                <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Vehicle Model</label>
+                                <input type="text" name="modelName" required placeholder="e.g. Toyota Prius Hybrid" 
+                                       class="w-full bg-slate-900/70 border border-slate-800 focus:border-yellow-450 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition duration-200">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Vehicle Class / Category</label>
+                                <select name="vehicleType" required 
+                                        class="w-full bg-slate-900/70 border border-slate-800 focus:border-yellow-450 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition duration-200">
+                                    <option value="SEDAN">Sedan Class</option>
+                                    <option value="SUV">SUV Comfort</option>
+                                    <option value="LUXURY">Luxury Elite</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">License Plate</label>
+                                <input type="text" name="licensePlate" required placeholder="e.g. WP CAD-4567" 
+                                       class="w-full bg-slate-900/70 border border-slate-800 focus:border-yellow-450 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition duration-200">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Vehicle Photo URL</label>
+                                <input type="url" name="imageUrl" placeholder="e.g. https://images.unsplash.com/photo-..." 
+                                       class="w-full bg-slate-900/70 border border-slate-800 focus:border-yellow-450 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition duration-200">
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Chauffeur</label>
+                                    <input type="text" name="driverName" required placeholder="Samantha Silva" 
+                                           class="w-full bg-slate-900/70 border border-slate-800 focus:border-yellow-450 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition duration-200">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Driver Phone</label>
+                                    <input type="text" name="driverPhone" required placeholder="+94 77 123 4567" 
+                                           class="w-full bg-slate-900/70 border border-slate-800 focus:border-yellow-450 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition duration-200">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Rate (LKR/KM)</label>
+                                    <input type="number" name="ratePerKm" min="0" step="0.5" required placeholder="120" 
+                                           class="w-full bg-slate-900/70 border border-slate-800 focus:border-yellow-450 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition duration-200">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Status</label>
+                                    <select name="status" required 
+                                            class="w-full bg-slate-900/70 border border-slate-800 focus:border-yellow-450 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition duration-200">
+                                        <option value="AVAILABLE">Available</option>
+                                        <option value="BUSY">Booked / Busy</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="w-full bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-350 hover:to-amber-450 text-slate-950 font-bold text-xs uppercase tracking-wider py-3.5 rounded-xl shadow-lg mt-3 transition duration-200">
+                                Add Vehicle
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Messages -->
+            <div id="tab-messages" class="tab-content hidden transition-all duration-300 animate-fade-in">
+                <div class="grid grid-cols-1 gap-6">
+                    <div th:each="m : ${messages}" class="bg-slate-950/50 p-6 rounded-2xl border border-slate-850 hover:border-yellow-400/10 transition-all duration-300 flex flex-col md:flex-row justify-between items-start gap-4">
+                        <div class="flex-grow">
+                            <!-- Msg Head -->
+                            <div class="flex flex-wrap items-center gap-3 mb-2">
+                                <span class="bg-gradient-to-r from-yellow-400 to-amber-500 text-slate-950 text-xs px-2.5 py-0.5 rounded-full font-bold shadow-md" th:text="${m.name}">Name</span>
+                                <span class="text-xs text-slate-400 font-mono" th:text="${m.email}">email@domain.com</span>
+                                <span class="text-xs text-slate-500">•</span>
+                                <span class="text-xs text-slate-500" th:text="${#temporals.format(m.createdAt, 'yyyy-MM-dd HH:mm')}">Date</span>
+                            </div>
+                            <!-- Msg Subject -->
+                            <h4 class="text-white font-bold text-base mb-3" th:text="${m.subject}">Subject Line</h4>
+                            <!-- Msg Body -->
+                            <p class="text-slate-400 text-sm leading-relaxed" th:text="${m.message}">Message content details go here...</p>
+                        </div>
+                        <div class="flex items-center gap-2 self-end md:self-start">
+                            <form th:action="@{'/admin/messages/delete/' + ${m.id}}" method="post" onsubmit="return confirm('Dismiss and clear this contact record?');">
+                                <button type="submit" class="bg-rose-950/40 text-rose-450 hover:bg-rose-600 hover:text-white border border-rose-900/40 px-4 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-1.5">
+                                    <i class="fa-regular fa-trash-can"></i> Dismiss
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div th:if="${#lists.isEmpty(messages)}" class="px-6 py-12 text-center text-slate-550 border border-dashed border-slate-800 rounded-2xl font-medium">
+                        No support inquiries or customer messages in the inbox.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Taxi Modal Overlay -->
+    <div id="updateTaxiModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center z-50 hidden transition-all duration-300 opacity-0">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 max-w-lg w-full mx-4 shadow-2xl relative transform scale-95 transition-all duration-300">
+            <!-- Close Button -->
+            <button type="button" onclick="closeUpdateModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white transition duration-200">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-pen-to-square text-yellow-400"></i> Update Vehicle Specs
+            </h3>
+
+            <form th:action="@{/admin/taxis/update}" method="post" class="flex flex-col gap-4">
+                <!-- Hidden ID Field -->
+                <input type="hidden" id="updateId" name="id">
+
+                <div>
+                    <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Vehicle Model</label>
+                    <input type="text" id="updateModelName" name="modelName" required placeholder="e.g. Toyota Prius Hybrid" 
+                           class="w-full bg-slate-950 border border-slate-800 focus:border-yellow-400 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition duration-200">
+                </div>
+
+                <div>
+                    <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Vehicle Class / Category</label>
+                    <select id="updateVehicleType" name="vehicleType" required 
+                            class="w-full bg-slate-950 border border-slate-800 focus:border-yellow-400 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition duration-200">
+                        <option value="SEDAN">Sedan Class</option>
+                        <option value="SUV">SUV Comfort</option>
+                        <option value="LUXURY">Luxury Elite</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">License Plate</label>
+                    <input type="text" id="updateLicensePlate" name="licensePlate" required placeholder="e.g. WP CAD-4567" 
+                           class="w-full bg-slate-950 border border-slate-800 focus:border-yellow-400 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition duration-200">
+                </div>
+
+                <div>
+                    <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Vehicle Photo URL</label>
+                    <input type="url" id="updateImageUrl" name="imageUrl" placeholder="e.g. https://images.unsplash.com/photo-..." 
+                           class="w-full bg-slate-950 border border-slate-800 focus:border-yellow-400 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition duration-200">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Chauffeur</label>
+                        <input type="text" id="updateDriverName" name="driverName" required placeholder="Samantha Silva" 
+                               class="w-full bg-slate-950 border border-slate-800 focus:border-yellow-400 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition duration-200">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Driver Phone</label>
+                        <input type="text" id="updateDriverPhone" name="driverPhone" required placeholder="+94 77 123 4567" 
+                               class="w-full bg-slate-950 border border-slate-800 focus:border-yellow-400 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition duration-200">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Rate (LKR/KM)</label>
+                        <input type="number" step="0.1" id="updateRatePerKm" name="ratePerKm" required placeholder="120" 
+                               class="w-full bg-slate-950 border border-slate-800 focus:border-yellow-400 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition duration-200">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Status</label>
+                        <select id="updateStatus" name="status" required 
+                                class="w-full bg-slate-950 border border-slate-800 focus:border-yellow-400 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition duration-200">
+                            <option value="AVAILABLE">Available</option>
+                            <option value="BUSY">Busy</option>
+                            <option value="OUT_OF_SERVICE">Out of Service</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 mt-4">
+                    <button type="button" onclick="closeUpdateModal()" 
+                            class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm py-3 rounded-xl transition duration-200">
+                        Cancel
+                     </button>
+                     <button type="submit" 
+                             class="flex-1 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-350 hover:to-amber-450 text-slate-950 font-extrabold text-sm py-3 rounded-xl shadow-lg transition duration-200">
+                         Save Changes
+                     </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script to toggle tabs -->
+    <script>
+        function openUpdateModal(id, model, type, plate, driver, phone, rate, status, imageUrl) {
+            document.getElementById('updateId').value = id;
+            document.getElementById('updateModelName').value = model;
+            document.getElementById('updateVehicleType').value = type;
+            document.getElementById('updateLicensePlate').value = plate;
+            document.getElementById('updateDriverName').value = driver;
+            document.getElementById('updateDriverPhone').value = phone;
+            document.getElementById('updateRatePerKm').value = rate;
+            document.getElementById('updateStatus').value = status;
+            document.getElementById('updateImageUrl').value = imageUrl || '';
+
+            const modal = document.getElementById('updateTaxiModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.firstElementChild.classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeUpdateModal() {
+            const modal = document.getElementById('updateTaxiModal');
+            modal.classList.add('opacity-0');
+            modal.firstElementChild.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function switchTab(tabId) {
+            // Hide all tabs content
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            // Show current tab content
+            document.getElementById(tabId).classList.remove('hidden');
+
+            // Reset all buttons style
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/40";
+            });
+
+            // Highlight active button
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.className = "tab-btn px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 bg-yellow-400 text-slate-950 shadow-lg";
+        }
+
+        // Intercept success parameters and trigger global showToast alert service
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const success = params.get('success');
+            if (success) {
+                if (success === 'taxiAdded') {
+                    showToast('New premium vehicle registered in the fleet database successfully!', 'success');
+                } else if (success === 'taxiDeleted') {
+                    showToast('Vehicle removed from active fleet database successfully.', 'warning');
+                } else if (success === 'taxiUpdated') {
+                    showToast('Vehicle specifications updated successfully inside data/taxi.txt!', 'success');
+                }
+                
+                // Clean up query param so refreshing page does not trigger toast again
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        });
+    </script>
+</main>
+</html>

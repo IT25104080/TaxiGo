@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: html(~{::title}, ~{::main})}">
+<head>
+    <title th:fragment="title">FAQ – TaxiGo</title>
+</head>
+<main th:fragment="main" class="bg-slate-950 text-slate-100 min-h-screen py-16 relative overflow-hidden">
+    <!-- Glowing background accents -->
+    <div class="absolute w-[450px] h-[450px] rounded-full bg-purple-500/10 blur-[130px] top-[10%] left-[10%] z-0"></div>
+    <div class="absolute w-[450px] h-[450px] rounded-full bg-yellow-400/5 blur-[130px] bottom-[15%] right-[10%] z-0"></div>
+
+    <div class="container mx-auto px-6 relative z-10">
+        <!-- Header -->
+        <div class="text-center max-w-2xl mx-auto mb-16 relative z-10">
+            <span class="text-xs font-bold text-yellow-400 uppercase tracking-widest bg-yellow-400/10 border border-yellow-400/20 rounded-full px-4 py-1.5 animate-pulse">Knowledge Base</span>
+            <h1 class="text-4xl md:text-5xl font-black text-white mt-4 font-heading tracking-tight">Frequently Asked <span class="bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent">Questions</span></h1>
+            <p class="text-slate-400 text-sm mt-3 font-sans">
+                Find quick, comprehensive answers to our system procedures, travel fares, and ride category dispatch queries.
+            </p>
+        </div>
+
+        <div class="max-w-3xl mx-auto space-y-4 relative z-10">
+            <!-- FAQ 1 -->
+            <details class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-2xl p-6 shadow-2xl transition duration-250 hover:border-slate-700/50 group" open>
+                <summary class="font-bold text-white text-base cursor-pointer hover:text-yellow-450 transition duration-200 outline-none select-none flex items-center gap-3">
+                    <i class="fa-solid fa-circle-question text-yellow-400 shrink-0"></i>
+                    <span>How do I book a ride?</span>
+                </summary>
+                <p class="text-slate-400 mt-4 leading-relaxed text-sm pl-7 border-t border-slate-800/40 pt-4">
+                    Create an account, sign in, and go to **Book Ride** in your passenger portal. Enter your pickup and drop-off locations, date, target time, and vehicle tier, then complete your payment.
+                </p>
+            </details>
+
+            <!-- FAQ 2 -->
+            <details class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-2xl p-6 shadow-2xl transition duration-250 hover:border-slate-700/50 group">
+                <summary class="font-bold text-white text-base cursor-pointer hover:text-yellow-450 transition duration-200 outline-none select-none flex items-center gap-3">
+                    <i class="fa-solid fa-circle-question text-purple-400 shrink-0"></i>
+                    <span>How is the fare calculated?</span>
+                </summary>
+                <p class="text-slate-400 mt-4 leading-relaxed text-sm pl-7 border-t border-slate-800/40 pt-4">
+                    Fares start at an LKR 500 base rate plus an estimated distance charge of 120 LKR per kilometer. Premium SUVs and XL vehicles include modifiers, and active **Premium VIP Members** receive a 10% cash discount automatically!
+                </p>
+            </details>
+
+            <!-- FAQ 3 -->
+            <details class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-2xl p-6 shadow-2xl transition duration-250 hover:border-slate-700/50 group">
+                <summary class="font-bold text-white text-base cursor-pointer hover:text-yellow-450 transition duration-200 outline-none select-none flex items-center gap-3">
+                    <i class="fa-solid fa-circle-question text-emerald-400 shrink-0"></i>
+                    <span>Can I cancel a booking?</span>
+                </summary>
+                <p class="text-slate-400 mt-4 leading-relaxed text-sm pl-7 border-t border-slate-800/40 pt-4">
+                    Yes. You can cancel any confirmed booking at any time directly from your passenger dashboard hub before your target pickup dispatch schedule begins.
+                </p>
+            </details>
+
+            <!-- FAQ 4 -->
+            <details class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-2xl p-6 shadow-2xl transition duration-250 hover:border-slate-700/50 group">
+                <summary class="font-bold text-white text-base cursor-pointer hover:text-yellow-450 transition duration-200 outline-none select-none flex items-center gap-3">
+                    <i class="fa-solid fa-circle-question text-blue-400 shrink-0"></i>
+                    <span>What payment methods are accepted?</span>
+                </summary>
+                <p class="text-slate-400 mt-4 leading-relaxed text-sm pl-7 border-t border-slate-800/40 pt-4">
+                    We support secure simulated credit card checkout, direct local banking options, and mobile pay gateways. You can configure your preferred payment category in your user profile parameters.
+                </p>
+            </details>
+
+            <!-- FAQ 5 -->
+            <details class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-2xl p-6 shadow-2xl transition duration-250 hover:border-slate-700/50 group">
+                <summary class="font-bold text-white text-base cursor-pointer hover:text-yellow-450 transition duration-200 outline-none select-none flex items-center gap-3">
+                    <i class="fa-solid fa-circle-question text-pink-400 shrink-0"></i>
+                    <span>Is TaxiGo available outside Colombo?</span>
+                </summary>
+                <p class="text-slate-400 mt-4 leading-relaxed text-sm pl-7 border-t border-slate-800/40 pt-4">
+                    We currently focus on Colombo Metropolitan and airport shuttle routes. For specialized inter-district, long-duration bookings, please submit an inquiry form.
+                </p>
+            </details>
+
+            <p class="text-center mt-12 text-slate-400 text-sm">
+                Still have questions? 
+                <a th:href="@{/contact}" class="text-yellow-400 hover:text-yellow-350 hover:underline font-bold transition ml-1">
+                    Contact our support team <i class="fa-solid fa-arrow-right text-xs ml-0.5"></i>
+                </a>
+            </p>
+        </div>
+    </div>
+</main>
+</html>

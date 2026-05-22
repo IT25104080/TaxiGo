@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: html(~{::title}, ~{::main})}">
+<head>
+    <title th:fragment="title">TaxiGo – Passenger Ride Hub</title>
+</head>
+<main th:fragment="main" class="bg-slate-950 text-slate-100 min-h-screen py-12 relative overflow-hidden">
+    <!-- Background glowing accents -->
+    <div class="absolute w-[450px] h-[450px] rounded-full bg-purple-500/10 blur-[130px] top-[-50px] left-[5%] z-0"></div>
+    <div class="absolute w-[450px] h-[450px] rounded-full bg-yellow-400/5 blur-[130px] bottom-[100px] right-[5%] z-0"></div>
+
+    <div class="container mx-auto px-6 relative z-10">
+        <!-- Header -->
+        <div class="border-b border-slate-800 pb-8 mb-10">
+            <h1 class="text-3xl md:text-5xl font-black text-white font-heading tracking-tight">Welcome, <span class="bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent" th:text="${user.name}">Buddhima</span>!</h1>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <!-- Metric 1: Total Trips -->
+            <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-850 p-6 rounded-2xl shadow-xl flex items-center gap-5">
+                <div class="w-14 h-14 bg-blue-500/10 border border-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400 text-2xl">
+                    <i class="fa-solid fa-route"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-slate-400">Total Rides Booked</p>
+                    <p class="text-2xl md:text-3xl font-extrabold text-white mt-1" th:text="${#lists.size(bookings)}">0</p>
+                </div>
+            </div>
+
+            <!-- Metric 2: Membership Tier -->
+            <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-850 p-6 rounded-2xl shadow-xl flex items-center gap-5">
+                <div class="w-14 h-14 bg-yellow-500/10 border border-yellow-500/20 rounded-2xl flex items-center justify-center text-yellow-400 text-2xl">
+                    <i class="fa-solid fa-award"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-slate-400">Membership Tier</p>
+                    <p class="text-xl md:text-2xl font-extrabold text-white mt-1 capitalize" th:text="${user.userType}">Regular</p>
+                </div>
+            </div>
+
+            <!-- Metric 3: Active Savings Benefit -->
+            <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-850 p-6 rounded-2xl shadow-xl flex items-center gap-5">
+                <div class="w-14 h-14 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center justify-center text-emerald-400 text-2xl">
+                    <i class="fa-solid fa-percent"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-slate-400">Active Ride Discounts</p>
+                    <p class="text-xl md:text-2xl font-extrabold text-white mt-1">
+                        <span th:if="${user.userType == 'premium'}">10% Active Discount</span>
+                        <span th:if="${user.userType != 'premium'}" class="text-slate-400 text-base font-normal">None (Standard Rates)</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-8">
+            <!-- Left Column: Passenger Profile Details Card -->
+            <div class="lg:col-span-1">
+                <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl flex flex-col justify-between h-full">
+                    <div>
+                        <h2 class="text-lg font-bold text-white border-b border-slate-800 pb-4 mb-6 flex items-center gap-2">
+                            <i class="fa-regular fa-id-card text-yellow-400"></i> Passenger Profile
+                        </h2>
+                        
+                        <div class="flex flex-col gap-5">
+                            <div>
+                                <span class="text-[10px] uppercase font-bold text-slate-500 tracking-widest block mb-1">Full Name</span>
+                                <p class="text-base font-bold text-white" th:text="${user.name}">Buddhima Rajapaksha</p>
+                            </div>
+                            
+                            <div>
+                                <span class="text-[10px] uppercase font-bold text-slate-500 tracking-widest block mb-1">Direct Line</span>
+                                <p class="text-sm font-mono font-semibold text-slate-200" th:text="${user.phone}">+94 77 123 4567</p>
+                            </div>
+
+                            <div>
+                                <span class="text-[10px] uppercase font-bold text-slate-500 tracking-widest block mb-1">Registered Email</span>
+                                <p class="text-sm font-semibold text-slate-300" th:text="${user.email}">buddhima@gmail.com</p>
+                            </div>
+
+                            <div th:if="${user.userType == 'premium'}" class="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 mt-2">
+                                <h4 class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 uppercase tracking-wider mb-1">
+                                    <i class="fa-solid fa-star"></i> Premium VIP Elite
+                                </h4>
+                                <p class="text-xs text-slate-350 leading-relaxed">You have an active Gold status passenger membership. You receive 10% cash savings on all travel categories automatically!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-slate-800 mt-8 pt-6 flex flex-col gap-3">
+                        <button type="button" 
+                                th:onclick="openProfileModal([[${user.name}]], [[${user.email}]], [[${user.phone}]])"
+                                class="w-full text-center bg-slate-850 hover:bg-slate-800 border border-slate-800 hover:border-yellow-400/40 text-white font-bold py-3 rounded-xl transition duration-200 flex items-center justify-center gap-1.5 text-xs uppercase tracking-wider">
+                            <i class="fa-regular fa-pen-to-square"></i> Modify Details
+                        </button>
+                        
+                        <form th:action="@{/user/delete}" method="post" 
+                              onsubmit="return confirm('WARNING: Are you absolutely sure you want to permanently delete your passenger profile from TaxiGo? This action is irreversible!');">
+                            <button type="submit" class="w-full text-center bg-rose-950/40 hover:bg-rose-900 border border-rose-900/40 hover:border-rose-600 text-rose-450 hover:text-white font-bold py-3 rounded-xl transition duration-200 flex items-center justify-center gap-1.5 text-xs uppercase tracking-wider">
+                                <i class="fa-regular fa-trash-can"></i> Delete Account
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: My Bookings Operations Hub -->
+            <div class="lg:col-span-2">
+                <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl">
+                    <h3 class="text-lg font-bold text-white border-b border-slate-800 pb-4 mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-history text-purple-400"></i> Active Ride Itineraries
+                    </h3>
+
+                    <!-- Empty State -->
+                    <div th:if="${bookings == null or bookings.isEmpty()}" class="text-slate-500 text-center py-16 border border-dashed border-slate-800 rounded-2xl">
+                        <i class="fa-solid fa-car-rear text-4xl mb-4 text-slate-600"></i>
+                        <p class="font-medium text-slate-400">No scheduled travel plans in your itineraries.</p>
+                        <a th:href="@{/book-ride}" class="text-yellow-400 hover:text-yellow-300 font-bold inline-flex items-center gap-1.5 mt-4 text-sm transition">
+                            Book your first premium ride <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+
+                    <!-- Bookings Loop -->
+                    <div th:each="b : ${bookings}" class="group bg-slate-950/40 border border-slate-850 hover:border-slate-800 rounded-2xl p-5 mb-5 last:mb-0 transition duration-200">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                            <div class="flex-1">
+                                <!-- Travel Route Timeline -->
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="inline-flex items-center gap-1.5 bg-yellow-400/10 border border-yellow-400/20 text-yellow-400 text-xs px-2.5 py-1 rounded-lg font-bold font-mono" th:text="${b.bookingId}">BK4567</span>
+                                    <span th:if="${#strings.equalsIgnoreCase(b.vehicleType, 'premium')}" class="inline-flex items-center gap-1 text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-amber-400/10 text-amber-450 border border-amber-400/20">Luxury Elite</span>
+                                    <span th:if="${#strings.equalsIgnoreCase(b.vehicleType, 'xl')}" class="inline-flex items-center gap-1 text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-purple-400/10 text-purple-400 border border-purple-400/20">XL Cruiser</span>
+                                    <span th:if="${#strings.equalsIgnoreCase(b.vehicleType, 'standard')}" class="inline-flex items-center gap-1 text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-blue-400/10 text-blue-450 border border-blue-400/20">Sedan comfort</span>
+                                </div>
+
+                                <div class="flex items-start gap-3">
+                                    <div class="flex flex-col items-center mt-1">
+                                        <i class="fa-solid fa-circle text-xs text-yellow-400 shrink-0"></i>
+                                        <div class="w-[2px] h-6 bg-slate-800"></div>
+                                        <i class="fa-solid fa-location-dot text-xs text-purple-400 shrink-0"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-bold text-white" th:text="${b.pickup}">Colombo Fort</div>
+                                        <div class="text-sm font-bold text-slate-300 mt-1" th:text="${b.dropoff}">Mount Lavinia</div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-4 text-xs text-slate-500 mt-4 border-t border-slate-900/60 pt-3">
+                                    <span><i class="fa-regular fa-calendar"></i> <span th:text="${b.pickupDate}">2026-05-22</span></span>
+                                    <span>•</span>
+                                    <span><i class="fa-regular fa-clock"></i> <span th:text="${b.pickupTime}">13:30</span></span>
+                                    <span>•</span>
+                                    <span class="text-white font-semibold">Fare: <span class="text-yellow-400" th:text="|LKR ${#numbers.formatDecimal(b.fare, 1, 2)}|">LKR 1,200</span></span>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-row md:flex-col items-end gap-3 self-stretch md:self-auto justify-between border-t border-slate-900 md:border-t-0 pt-4 md:pt-0">
+                                <!-- Status Badge -->
+                                <span class="text-[10px] uppercase font-extrabold px-3 py-1 rounded-full border tracking-wider"
+                                      th:classappend="${b.status == 'CANCELLED'} ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' : (${b.status == 'PENDING_PAYMENT'} ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20')"
+                                      th:text="${b.status}">CONFIRMED</span>
+
+                                <!-- Cancellation or Payment Action -->
+                                <div class="flex items-center gap-3">
+                                    <a th:if="${b.status == 'PENDING_PAYMENT'}" th:href="@{/payment(bookingId=${b.bookingId})}"
+                                       class="text-xs bg-yellow-400 hover:bg-yellow-350 text-slate-950 font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 transition">
+                                        <i class="fa-solid fa-credit-card"></i> Pay Now
+                                    </a>
+                                    <form th:if="${b.status != 'CANCELLED'}" th:action="@{/user/bookings/cancel}" method="post">
+                                        <input type="hidden" name="bookingId" th:value="${b.bookingId}">
+                                        <button type="submit" class="text-xs text-rose-450 hover:text-rose-400 hover:underline flex items-center gap-1 transition duration-200"
+                                                onclick="return confirm('Cancel this ride itinerary?');">
+                                            <i class="fa-solid fa-ban"></i> Cancel
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Passenger Profile Modal Overlay -->
+    <div id="updateProfileModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center z-50 hidden transition-all duration-300 opacity-0">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 max-w-lg w-full mx-4 shadow-2xl relative transform scale-95 transition-all duration-300">
+            <!-- Close Button -->
+            <button type="button" onclick="closeProfileModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white transition duration-200">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                <i class="fa-regular fa-pen-to-square text-yellow-400"></i> Update Profile Specifications
+            </h3>
+
+            <form th:action="@{/user/profile/update}" method="post" class="flex flex-col gap-4">
+                <div>
+                    <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Full Name</label>
+                    <input type="text" id="profileName" name="name" required 
+                           class="w-full bg-slate-950 border border-slate-800 focus:border-yellow-400 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition duration-200">
+                </div>
+
+                <div>
+                    <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Direct Telephone</label>
+                    <input type="text" id="profilePhone" name="phone" required 
+                           class="w-full bg-slate-950 border border-slate-800 focus:border-yellow-400 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition duration-200">
+                </div>
+
+                <div>
+                    <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Email Address</label>
+                    <input type="email" id="profileEmail" name="email" required 
+                           class="w-full bg-slate-950 border border-slate-800 focus:border-yellow-400 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition duration-200">
+                </div>
+
+                <div>
+                    <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">New Password (leave blank to keep current)</label>
+                    <input type="password" name="password" placeholder="••••••••" 
+                           class="w-full bg-slate-950 border border-slate-800 focus:border-yellow-400 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition duration-200">
+                </div>
+
+                <div class="flex gap-4 mt-4">
+                    <button type="button" onclick="closeProfileModal()" 
+                            class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm py-3 rounded-xl transition duration-200">
+                        Cancel
+                    </button>
+                    <button type="submit" 
+                            class="flex-1 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-350 hover:to-amber-450 text-slate-950 font-extrabold text-sm py-3 rounded-xl shadow-lg transition duration-200">
+                        Save Specs
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script triggers -->
+    <script>
+        function openProfileModal(name, email, phone) {
+            document.getElementById('profileName').value = name;
+            document.getElementById('profileEmail').value = email;
+            document.getElementById('profilePhone').value = phone;
+
+            const modal = document.getElementById('updateProfileModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.firstElementChild.classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeProfileModal() {
+            const modal = document.getElementById('updateProfileModal');
+            modal.classList.add('opacity-0');
+            modal.firstElementChild.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('booked') === 'true') {
+                showToast('Payment Successful! Premium Ride Scheduled & Dispatch Confirmed.', 'success');
+            }
+            if (params.get('success') === 'profileUpdated') {
+                showToast('Passenger profile updated successfully inside the database!', 'success');
+            }
+            // Clean URL query
+            window.history.replaceState({}, document.title, window.location.pathname);
+        });
+    </script>
+</main>
+</html>

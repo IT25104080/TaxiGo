@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: html(~{::title}, ~{::main})}">
+<head><title th:fragment="title">Terms of Service – TaxiGo</title></head>
+<main th:fragment="main">
+    <section class="py-16 container mx-auto px-4 max-w-3xl">
+        <h1 class="text-3xl font-bold text-purple-700 mb-6">Terms of Service</h1>
+        <div class="bg-white rounded-xl shadow p-8 text-gray-600 space-y-4">
+            <p>By using TaxiGo you agree to these terms. You must be 18+ to create an account.</p>
+            <p>Fares shown at booking are estimates; final charges may vary based on actual route and waiting time.</p>
+            <p>Users are responsible for accurate pickup details. Repeated no-shows may result in account suspension.</p>
+            <p>TaxiGo is not liable for delays caused by traffic, weather, or events beyond our control.</p>
+            <p>We reserve the right to update these terms. Continued use constitutes acceptance.</p>
+        </div>
+    </section>
+</main>
+</html>

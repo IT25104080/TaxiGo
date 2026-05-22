@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: html(~{::title}, ~{::main})}">
+<head><title th:fragment="title">Services – TaxiGo</title></head>
+<main th:fragment="main">
+    <section class="hero-gradient text-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl font-bold">Our Services</h1>
+            <p class="text-purple-100 mt-4">Rides for every occasion and budget.</p>
+        </div>
+    </section>
+    <section class="py-16 container mx-auto px-4">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition">
+                <div class="text-4xl mb-4">🚕</div>
+                <h3 class="text-xl font-bold text-purple-700">Standard Ride</h3>
+                <p class="text-gray-600 mt-2">Economical sedans for everyday city travel. Perfect for work commutes and shopping trips.</p>
+                <p class="mt-4 text-sm text-purple-600 font-semibold">From LKR 500 base fare</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition">
+                <div class="text-4xl mb-4">✨</div>
+                <h3 class="text-xl font-bold text-purple-700">Premium Ride</h3>
+                <p class="text-gray-600 mt-2">Comfortable premium vehicles with extra legroom and amenities.</p>
+                <p class="mt-4 text-sm text-purple-600 font-semibold">1.5× standard fare</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition">
+                <div class="text-4xl mb-4">👨‍👩‍👧‍👦</div>
+                <h3 class="text-xl font-bold text-purple-700">XL / Group</h3>
+                <p class="text-gray-600 mt-2">Spacious vans for families, groups, and extra luggage.</p>
+                <p class="mt-4 text-sm text-purple-600 font-semibold">2× standard fare</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition">
+                <div class="text-4xl mb-4">✈️</div>
+                <h3 class="text-xl font-bold text-purple-700">Airport Transfer</h3>
+                <p class="text-gray-600 mt-2">Reliable pickups and drop-offs to Bandaranaike International Airport.</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition">
+                <div class="text-4xl mb-4">🏢</div>
+                <h3 class="text-xl font-bold text-purple-700">Corporate</h3>
+                <p class="text-gray-600 mt-2">Monthly billing and dedicated accounts for businesses.</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition">
+                <div class="text-4xl mb-4">⭐</div>
+                <h3 class="text-xl font-bold text-purple-700">Premium Membership</h3>
+                <p class="text-gray-600 mt-2">Register as a premium member and save 10% on every booking.</p>
+                <a th:href="@{/user/register}" class="inline-block mt-4 text-purple-600 font-semibold hover:underline">Join now →</a>
+            </div>
+        </div>
+        <div class="text-center mt-12">
+            <a th:href="@{/book-ride}" class="bg-yellow-400 text-gray-900 font-bold px-8 py-4 rounded-lg hover:bg-yellow-300"
+               th:if="${currentUser != null}">Book a Ride</a>
+            <a th:href="@{/user/login}" class="bg-yellow-400 text-gray-900 font-bold px-8 py-4 rounded-lg hover:bg-yellow-300"
+               th:if="${currentUser == null}">Login to Book</a>
+        </div>
+    </section>
+</main>
+</html>

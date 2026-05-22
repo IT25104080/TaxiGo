@@ -1,0 +1,4 @@
+TAXI,TX1001,Toyota Prius Hybrid,SEDAN,WP CAD-4567,Rohan Perera,+94 77 123 4567,110.0,AVAILABLE,https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=600&q=80
+TAXI,TX1002,Mercedes-Benz E-Class Luxury,LUXURY,WP CBA-8899,Dimuthu Fernando,+94 77 987 6543,290.0,AVAILABLE,https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=600&q=80
+TAXI,TX1003,Nissan X-Trail Intelligent SUV,SUV,WP CAB-9922,Nimal Siripala,+94 71 555 4433,170.0,AVAILABLE,https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80
+TAXI,TX1004,Vitz,SUV,was1234,batman,1234567,9000.0,AVAILABLE,https://toyotaconnect.co.za/wp-content/uploads/2023/05/Full-width_1440x600_Toyota-1.jpg

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: html(~{::title}, ~{::main})}">
+<head>
+    <title th:fragment="title">TaxiGo – Premium Ride Checkout</title>
+</head>
+<main th:fragment="main" class="bg-slate-950 text-slate-100 min-h-screen py-16 relative overflow-hidden">
+    <!-- Glowing background accents -->
+    <div class="absolute w-[450px] h-[450px] rounded-full bg-purple-500/10 blur-[130px] top-[10%] left-[10%] z-0"></div>
+    <div class="absolute w-[450px] h-[450px] rounded-full bg-yellow-400/5 blur-[130px] bottom-[15%] right-[10%] z-0"></div>
+
+    <div class="container mx-auto px-6 relative z-10">
+        <!-- Hero Header -->
+        <div class="text-center max-w-2xl mx-auto mb-12">
+            <span class="text-xs font-bold text-yellow-400 uppercase tracking-widest bg-yellow-400/10 border border-yellow-400/20 rounded-full px-4 py-1.5 animate-pulse">Payment Hub</span>
+            <h1 class="text-4xl md:text-5xl font-black text-white mt-4 font-heading tracking-tight">Secure <span class="bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent">Payment Checkout</span></h1>
+            <p class="text-slate-400 text-sm mt-3 font-sans">
+                Review passenger credentials and finalize your transaction with our simulated 3D-secure sandbox gateway.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-6xl mx-auto">
+            
+            <!-- Left Column: Simulated Payment Portal & Passenger Profile -->
+            <div class="lg:col-span-5 flex flex-col gap-6">
+                <!-- Passenger Details Card -->
+                <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl">
+                    <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-800 pb-3">
+                        <i class="fa-regular fa-circle-user text-yellow-400"></i> Passenger Profile Details
+                    </h3>
+                    
+                    <div class="grid grid-cols-2 gap-4 text-xs">
+                        <div>
+                            <span class="text-[9px] uppercase font-bold text-slate-500 tracking-wider block mb-0.5">Passenger Name</span>
+                            <p class="font-bold text-white" th:text="${user.name}">Buddhima Rajapaksha</p>
+                        </div>
+                        <div>
+                            <span class="text-[9px] uppercase font-bold text-slate-500 tracking-wider block mb-0.5">Direct Line</span>
+                            <p class="font-semibold text-slate-300" th:text="${user.phone}">+94 712234567</p>
+                        </div>
+                        <div class="col-span-2">
+                            <span class="text-[9px] uppercase font-bold text-slate-500 tracking-wider block mb-0.5">Passenger Email</span>
+                            <p class="font-semibold text-slate-350" th:text="${user.email}">buddhima@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Simulated Payment Card Box -->
+                <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl">
+                    <h3 class="text-base font-bold text-white mb-5 flex items-center gap-2 border-b border-slate-800 pb-3">
+                        <i class="fa-solid fa-credit-card text-purple-400"></i> Simulated Payment Gateway
+                    </h3>
+
+                    <!-- Visual Credit Card Mockup (Updates Dynamically via JS) -->
+                    <div class="w-full h-44 rounded-2xl bg-gradient-to-br from-indigo-600 via-purple-600 to-slate-950 p-5 shadow-2xl relative overflow-hidden mb-6 border border-white/10">
+                        <div class="flex justify-between items-start z-10 relative">
+                            <div class="w-10 h-8 bg-amber-400/40 rounded-md border border-amber-300/35"></div>
+                            <span class="text-xs font-bold text-white tracking-widest font-mono">VISA</span>
+                        </div>
+                        
+                        <div id="mock-card-number" class="mt-8 text-xl font-bold tracking-widest text-white font-mono z-10 relative">
+                            ••••  ••••  ••••  4567
+                        </div>
+                        
+                        <div class="mt-6 flex justify-between items-center text-xs z-10 relative">
+                            <div>
+                                <span class="text-[8px] uppercase text-white/50 block font-mono">Cardholder</span>
+                                <span id="mock-card-name" class="font-bold text-white" th:text="${user.name}">Buddhima Rajapaksha</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-[8px] uppercase text-white/50 block font-mono">Expiry</span>
+                                <span id="mock-card-expiry" class="font-bold text-white font-mono">12 / 29</span>
+                            </div>
+                        </div>
+
+                        <div class="absolute w-[200px] h-[200px] rounded-full bg-purple-500/20 blur-xl top-[-30%] right-[-10%] pointer-events-none"></div>
+                    </div>
+
+                    <!-- Payment Entry Form (Direct action) -->
+                    <form th:action="@{/payment/complete}" method="post" class="flex flex-col gap-4">
+                        <input type="hidden" name="bookingId" th:value="${booking.bookingId}">
+
+                        <div>
+                            <label class="block text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-wider">Card Number</label>
+                            <input type="text" id="input-card-number" placeholder="4111 2222 3333 4567" required
+                                   class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none transition duration-200">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-wider">Expiration Date</label>
+                                <input type="text" id="input-card-expiry" placeholder="12 / 29" required
+                                       class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none transition duration-200">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-wider">CVV Security</label>
+                                <input type="password" placeholder="•••" required maxlength="3"
+                                       class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none transition duration-200">
+                            </div>
+                        </div>
+
+                        <!-- Book and Complete Payment -->
+                        <div class="border-t border-slate-800 mt-4 pt-6">
+                            <button type="submit" 
+                                    class="w-full bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-350 hover:to-amber-450 text-slate-950 font-extrabold text-sm py-4 rounded-xl shadow-lg hover:shadow-yellow-500/20 hover:scale-[1.01] transition-all duration-300 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-circle-check"></i> Complete Secure Payment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Column: Premium Invoice Ride Summary Breakdown -->
+            <div class="lg:col-span-7">
+                <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-8 shadow-2xl">
+                    <h2 class="text-xl font-bold text-white border-b border-slate-800 pb-4 mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-receipt text-yellow-400"></i> Travel Invoice Summary
+                    </h2>
+
+                    <!-- Main Route Timelines -->
+                    <div class="bg-slate-950/50 border border-slate-850 rounded-2xl p-6 mb-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="inline-flex items-center gap-1.5 bg-yellow-400/10 border border-yellow-400/20 text-yellow-400 text-xs px-2.5 py-1 rounded-lg font-bold font-mono" th:text="${booking.bookingId}">BK4567</span>
+                            <span th:if="${#strings.equalsIgnoreCase(booking.vehicleType, 'premium')}" class="inline-flex items-center gap-1 text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-amber-400/10 text-amber-450 border border-amber-400/20">Luxury Elite</span>
+                            <span th:if="${#strings.equalsIgnoreCase(booking.vehicleType, 'xl')}" class="inline-flex items-center gap-1 text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-purple-400/10 text-purple-400 border border-purple-400/20">XL Cruiser</span>
+                            <span th:if="${#strings.equalsIgnoreCase(booking.vehicleType, 'standard')}" class="inline-flex items-center gap-1 text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-blue-400/10 text-blue-450 border border-blue-400/20">Sedan Comfort</span>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="flex flex-col items-center mt-1 shrink-0">
+                                <i class="fa-solid fa-circle text-xs text-yellow-400"></i>
+                                <div class="w-[2px] h-10 bg-slate-850"></div>
+                                <i class="fa-solid fa-location-dot text-sm text-purple-400"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="mb-3">
+                                    <span class="text-[9px] uppercase font-bold text-slate-500 tracking-wider block mb-0.5">Pickup Terminal</span>
+                                    <p class="text-sm font-bold text-white" th:text="${booking.pickup}">Colombo Fort</p>
+                                </div>
+                                <div>
+                                    <span class="text-[9px] uppercase font-bold text-slate-500 tracking-wider block mb-0.5">Destination drop-off</span>
+                                    <p class="text-sm font-bold text-slate-200" th:text="${booking.dropoff}">Mount Lavinia</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 mt-6 border-t border-slate-900 pt-4 text-xs text-slate-400">
+                            <div>
+                                <span class="text-[9px] uppercase font-bold text-slate-500 tracking-wider block mb-0.5">Scheduled Date</span>
+                                <p class="font-semibold text-slate-300"><i class="fa-regular fa-calendar text-yellow-400/80 mr-1"></i> <span th:text="${booking.pickupDate}">2026-05-22</span></p>
+                            </div>
+                            <div>
+                                <span class="text-[9px] uppercase font-bold text-slate-500 tracking-wider block mb-0.5">Dispatch Target Time</span>
+                                <p class="font-semibold text-slate-300"><i class="fa-regular fa-clock text-yellow-400/80 mr-1"></i> <span th:text="${booking.pickupTime}">13:30</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Pricing Details -->
+                    <div class="flex flex-col gap-3.5 border-t border-slate-800 pt-6">
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-slate-400 font-medium">Standard Fleet Tariff Base</span>
+                            <span class="text-white font-mono font-semibold" th:text="|LKR ${#numbers.formatDecimal(booking.fare, 1, 2)}|">LKR 1,200.00</span>
+                        </div>
+
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-slate-400 font-medium">Platform Service & GHT</span>
+                            <span class="text-emerald-400 font-mono font-semibold">FREE</span>
+                        </div>
+
+                        <div th:if="${user.userType == 'premium'}" class="flex justify-between items-center text-sm">
+                            <span class="text-emerald-450 font-medium flex items-center gap-1"><i class="fa-solid fa-star text-xs"></i> 10% Membership Discount</span>
+                            <span class="text-emerald-450 font-mono font-semibold" th:text="|-$${#numbers.formatDecimal(booking.fare * 0.1, 1, 2)}|">-LKR 120.00</span>
+                        </div>
+
+                        <div class="border-t border-slate-850 mt-2 pt-4 flex justify-between items-center">
+                            <span class="text-base font-bold text-white">Final Settled Amount</span>
+                            <span class="text-2xl font-black text-yellow-400 font-mono" th:text="|LKR ${#numbers.formatDecimal(booking.fare, 1, 2)}|">LKR 1,200.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Security badges -->
+                    <div class="grid grid-cols-3 gap-3.5 text-[9px] uppercase font-bold text-slate-500 tracking-wider text-center mt-12 border-t border-slate-900 pt-8">
+                        <div class="bg-slate-950/40 border border-slate-850/60 rounded-xl p-3.5 flex flex-col items-center gap-1.5">
+                            <i class="fa-solid fa-lock text-emerald-400 text-lg"></i>
+                            <span>256-Bit SSL Secured</span>
+                        </div>
+                        <div class="bg-slate-950/40 border border-slate-850/60 rounded-xl p-3.5 flex flex-col items-center gap-1.5">
+                            <i class="fa-solid fa-credit-card text-purple-400 text-lg"></i>
+                            <span>PCI-DSS Compliant</span>
+                        </div>
+                        <div class="bg-slate-950/40 border border-slate-850/60 rounded-xl p-3.5 flex flex-col items-center gap-1.5">
+                            <i class="fa-solid fa-shield-halved text-yellow-400 text-lg"></i>
+                            <span>Sandbox Secure</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<!-- Dynamic Live card updates -->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const numberInput = document.getElementById("input-card-number");
+        const expiryInput = document.getElementById("input-card-expiry");
+        const mockNumber = document.getElementById("mock-card-number");
+        const mockExpiry = document.getElementById("mock-card-expiry");
+
+        if (numberInput) {
+            numberInput.addEventListener("input", (e) => {
+                let val = e.target.value.replace(/\s+/g, '');
+                // Format card number with spaces every 4 characters
+                let formatted = "";
+                for (let i = 0; i < val.length; i++) {
+                    if (i > 0 && i % 4 === 0) {
+                        formatted += "  ";
+                    }
+                    formatted += val[i];
+                }
+                mockNumber.textContent = formatted || "••••  ••••  ••••  4567";
+            });
+        }
+
+        if (expiryInput) {
+            expiryInput.addEventListener("input", (e) => {
+                mockExpiry.textContent = e.target.value || "12 / 29";
+            });
+        }
+    });
+</script>
+</html>

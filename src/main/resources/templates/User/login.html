@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: html(~{::title}, ~{::main})}">
+<head>
+    <title th:fragment="title">Login – TaxiGo</title>
+</head>
+<main th:fragment="main" class="bg-slate-950 text-slate-100 min-h-screen py-16 relative overflow-hidden flex items-center justify-center">
+    <!-- Glowing background accents -->
+    <div class="absolute w-[450px] h-[450px] rounded-full bg-purple-500/10 blur-[130px] top-[10%] left-[10%] z-0"></div>
+    <div class="absolute w-[450px] h-[450px] rounded-full bg-yellow-400/5 blur-[130px] bottom-[15%] right-[10%] z-0"></div>
+
+    <div class="container mx-auto px-6 flex items-center justify-center relative z-10">
+        <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-8 shadow-2xl w-full max-w-md">
+            <h2 class="text-3xl font-black text-center text-white mb-6 font-heading tracking-tight">Sign <span class="bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent">In</span></h2>
+            
+            <!-- Alert States -->
+            <div th:if="${error}" class="bg-rose-500/10 text-rose-450 border border-rose-500/20 p-3.5 mb-5 rounded-xl text-xs font-semibold flex items-center gap-2" th:text="${error}"></div>
+            <div th:if="${message}" class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 p-3.5 mb-5 rounded-xl text-xs font-semibold flex items-center gap-2" th:text="${message}"></div>
+            <div th:if="${param.redirect == 'book'}" class="bg-purple-500/10 text-purple-400 border border-purple-500/20 p-3.5 mb-5 rounded-xl text-xs font-semibold flex items-center gap-2">
+                <i class="fa-solid fa-circle-info"></i> Please sign in to book a ride.
+            </div>
+
+            <form th:action="@{/user/login}" method="post" class="space-y-4">
+                <input type="hidden" name="redirect" th:if="${param.redirect != null}" th:value="${param.redirect[0]}">
+                
+                <div>
+                    <label class="block text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-wider">Email Address</label>
+                    <input type="email" name="email" placeholder="email@taxigo.lk" required
+                           class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition duration-200">
+                </div>
+
+                <div>
+                    <label class="block text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-wider">Password</label>
+                    <input type="password" name="password" placeholder="••••••••" required
+                           class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition duration-200">
+                </div>
+
+                <button type="submit" 
+                        class="w-full bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-350 hover:to-amber-450 text-slate-950 font-extrabold text-sm py-4 rounded-xl shadow-lg hover:shadow-yellow-500/20 hover:scale-[1.01] transition-all duration-300 flex items-center justify-center gap-2 mt-6">
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i> Login to TaxiGo
+                </button>
+            </form>
+
+            <p class="mt-6 text-center text-slate-400 text-sm">
+                No account? 
+                <a th:href="@{/user/register}" class="text-yellow-400 hover:text-yellow-350 font-bold hover:underline ml-1">Register</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('registered') !== null) {
+                showToast('Your premium TaxiGo account was created! Please sign in below.', 'success');
+            }
+            if (params.get('success') === 'accountDeleted') {
+                showToast('Your passenger profile has been permanently removed from TaxiGo. We hope to see you again!', 'error');
+            }
+            // Clean up address bar query params
+            window.history.replaceState({}, document.title, window.location.pathname);
+        });
+    </script>
+</main>
+</html>

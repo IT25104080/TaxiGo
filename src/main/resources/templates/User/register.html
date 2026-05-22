@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: html(~{::title}, ~{::main})}">
+<head>
+    <title th:fragment="title">Register – TaxiGo</title>
+</head>
+<main th:fragment="main" class="bg-slate-950 text-slate-100 min-h-screen py-16 relative overflow-hidden flex items-center justify-center">
+    <!-- Glowing background accents -->
+    <div class="absolute w-[450px] h-[450px] rounded-full bg-purple-500/10 blur-[130px] top-[10%] left-[10%] z-0"></div>
+    <div class="absolute w-[450px] h-[450px] rounded-full bg-yellow-400/5 blur-[130px] bottom-[15%] right-[10%] z-0"></div>
+
+    <div class="container mx-auto px-6 flex items-center justify-center relative z-10">
+        <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-8 shadow-2xl w-full max-w-md">
+            <h2 class="text-3xl font-black text-center text-white mb-6 font-heading tracking-tight">Create <span class="bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent">Account</span></h2>
+            
+            <!-- Alert States -->
+            <div th:if="${error}" class="bg-rose-500/10 text-rose-450 border border-rose-500/20 p-3.5 mb-5 rounded-xl text-xs font-semibold flex items-center gap-2" th:text="${error}"></div>
+
+            <form th:action="@{/user/register}" method="post" class="space-y-4">
+                <div>
+                    <label class="block text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-wider">Full Name</label>
+                    <input type="text" name="name" placeholder="Full Name" required
+                           class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition duration-200">
+                </div>
+
+                <div>
+                    <label class="block text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-wider">Email Address</label>
+                    <input type="email" name="email" placeholder="email@taxigo.lk" required
+                           class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition duration-200">
+                </div>
+
+                <div>
+                    <label class="block text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-wider">Phone Number</label>
+                    <input type="tel" name="phone" placeholder="+94 77 123 4567" required
+                           class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition duration-200">
+                </div>
+
+                <div>
+                    <label class="block text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-wider">Secure Password</label>
+                    <input type="password" name="password" placeholder="••••••••" required
+                           class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition duration-200">
+                </div>
+
+                <div>
+                    <label class="block text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-wider">Account Tier</label>
+                    <select name="userType" 
+                            class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl px-4 py-3 text-sm text-slate-350 focus:outline-none transition duration-200 cursor-pointer">
+                        <option value="regular">Regular Passenger</option>
+                        <option value="premium">Premium VIP Member (10% Ride discount)</option>
+                    </select>
+                </div>
+
+                <button type="submit" 
+                        class="w-full bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-350 hover:to-amber-450 text-slate-950 font-extrabold text-sm py-4 rounded-xl shadow-lg hover:shadow-yellow-500/20 hover:scale-[1.01] transition-all duration-300 flex items-center justify-center gap-2 mt-6">
+                    <i class="fa-solid fa-user-plus"></i> Register Account
+                </button>
+            </form>
+
+            <p class="mt-6 text-center text-slate-400 text-sm">
+                Already have an account? 
+                <a th:href="@{/user/login}" class="text-yellow-400 hover:text-yellow-350 font-bold hover:underline ml-1">Login</a>
+            </p>
+        </div>
+    </div>
+</main>
+</html>

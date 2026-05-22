@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: html(~{::title}, ~{::main})}">
+<head><title th:fragment="title">About Us – TaxiGo</title></head>
+<main th:fragment="main">
+    <section class="hero-gradient text-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl font-bold">About TaxiGo</h1>
+            <p class="text-purple-100 mt-4 max-w-2xl mx-auto">Connecting passengers with trusted drivers since 2024.</p>
+        </div>
+    </section>
+    <section class="py-16 container mx-auto px-4 max-w-4xl">
+        <div class="bg-white rounded-xl shadow p-8 mb-8">
+            <h2 class="text-2xl font-bold text-purple-700 mb-4">Our Story</h2>
+            <p class="text-gray-600 leading-relaxed mb-4">
+                TaxiGo was founded to make urban transportation in Sri Lanka simpler, safer, and more affordable.
+                We combine modern technology with a network of professional drivers to deliver rides you can count on.
+            </p>
+            <p class="text-gray-600 leading-relaxed">
+                Whether you need a quick trip across town, an airport transfer, or a premium vehicle for a special event,
+                TaxiGo is here to get you there comfortably and on time.
+            </p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-purple-50 p-6 rounded-xl text-center">
+                <h3 class="font-bold text-purple-700 text-lg">Mission</h3>
+                <p class="text-gray-600 mt-2 text-sm">Provide safe, accessible transport for everyone.</p>
+            </div>
+            <div class="bg-purple-50 p-6 rounded-xl text-center">
+                <h3 class="font-bold text-purple-700 text-lg">Vision</h3>
+                <p class="text-gray-600 mt-2 text-sm">Become Sri Lanka's most trusted ride platform.</p>
+            </div>
+            <div class="bg-purple-50 p-6 rounded-xl text-center">
+                <h3 class="font-bold text-purple-700 text-lg">Values</h3>
+                <p class="text-gray-600 mt-2 text-sm">Safety, honesty, and customer-first service.</p>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow p-8">
+            <h2 class="text-2xl font-bold text-purple-700 mb-4">Our Team</h2>
+            <p class="text-gray-600">A dedicated team of engineers, operations staff, and support agents work around the clock to keep TaxiGo running smoothly for riders and drivers alike.</p>
+            <a th:href="@{/contact}" class="inline-block mt-6 bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700">Get in Touch</a>
+        </div>
+    </section>
+</main>
+</html>

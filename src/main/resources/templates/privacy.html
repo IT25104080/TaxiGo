@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: html(~{::title}, ~{::main})}">
+<head><title th:fragment="title">Privacy Policy – TaxiGo</title></head>
+<main th:fragment="main">
+    <section class="py-16 container mx-auto px-4 max-w-3xl">
+        <h1 class="text-3xl font-bold text-purple-700 mb-6">Privacy Policy</h1>
+        <div class="bg-white rounded-xl shadow p-8 prose text-gray-600 space-y-4">
+            <p>Last updated: May 2026</p>
+            <p>TaxiGo collects personal information (name, email, phone) when you register and book rides. This data is stored securely and used only to provide our services.</p>
+            <p>We do not sell your data to third parties. Location data is used solely for ride matching and is not retained beyond trip completion.</p>
+            <p>You may request account deletion at any time from your profile page.</p>
+            <p>For privacy enquiries, contact <strong>privacy@taxigo.lk</strong>.</p>
+        </div>
+    </section>
+</main>
+</html>
