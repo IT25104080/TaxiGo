@@ -1,3 +1,8 @@
+<!-- 
+    TaxiGo Ride Booking & Checkout Template.
+    Utilizes Thymeleaf layout fragment replacement to wrap page header/main wrappers,
+    styled with Tailwind CSS dark slate color configurations and glowing visual accents.
+-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{fragments/layout :: html(~{::title}, ~{::main})}">
@@ -5,12 +10,12 @@
     <title th:fragment="title">TaxiGo – Premium Ride Checkout</title>
 </head>
 <main th:fragment="main" class="bg-slate-950 text-slate-100 min-h-screen py-16 relative overflow-hidden">
-    <!-- Glowing background accents -->
+    <!-- Glowing background accents for enhanced micro-aesthetic styling -->
     <div class="absolute w-[450px] h-[450px] rounded-full bg-purple-500/10 blur-[130px] top-[10%] left-[10%] z-0"></div>
     <div class="absolute w-[450px] h-[450px] rounded-full bg-yellow-400/5 blur-[130px] bottom-[15%] right-[10%] z-0"></div>
 
     <div class="container mx-auto px-6 relative z-10">
-        <!-- Hero Header -->
+        <!-- Hero Header explaining checkout center action -->
         <div class="text-center max-w-2xl mx-auto mb-16">
             <span class="text-xs font-bold text-yellow-400 uppercase tracking-widest bg-yellow-400/10 border border-yellow-400/20 rounded-full px-4 py-1.5 animate-pulse">Checkout Center</span>
             <h1 class="text-4xl md:text-5xl font-black text-white mt-4 font-heading tracking-tight">Confirm & <span class="bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent">Book Rides</span></h1>
@@ -19,12 +24,12 @@
             </p>
         </div>
 
-        <!-- Split Layout Grid -->
+        <!-- Split Layout Grid: Left column for user details & assurance; Right column for input details -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-6xl mx-auto">
             
             <!-- Left Column: Passenger Profile & Visual Payment Checkout (Lg: col-span-5) -->
             <div class="lg:col-span-5 flex flex-col gap-6">
-                <!-- Passenger Card -->
+                <!-- Passenger Card: Loads dynamic details of the currently authenticated passenger -->
                 <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl">
                     <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-800 pb-3">
                         <i class="fa-regular fa-circle-user text-yellow-400"></i> Passenger Profile Details
@@ -41,18 +46,18 @@
                         </div>
                         <div class="col-span-2">
                             <span class="text-[9px] uppercase font-bold text-slate-500 tracking-wider block mb-0.5">Passenger Email</span>
-                            <p class="font-semibold text-slate-350" th:text="${user.email}">buddhima@gmail.com</p>
+                            <p class="font-semibold text-slate-355" th:text="${user.email}">buddhima@gmail.com</p>
                         </div>
                     </div>
 
-                    <!-- Discount indicator -->
+                    <!-- Discount banner displayed exclusively for premium level customers -->
                     <div th:if="${user.userType == 'premium'}" class="mt-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-450 p-3.5 rounded-xl flex items-center gap-2.5">
                         <i class="fa-solid fa-circle-check text-base text-emerald-400"></i>
                         <span class="text-[11px] font-semibold">10% Premium Discount applied automatically!</span>
                     </div>
                 </div>
 
-                <!-- TaxiGo Ride Assurance Card -->
+                <!-- TaxiGo Ride Assurance Card displaying static service benefits -->
                 <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl">
                     <h3 class="text-base font-bold text-white mb-5 flex items-center gap-2 border-b border-slate-800 pb-3">
                         <i class="fa-solid fa-shield-halved text-yellow-400"></i> TaxiGo Ride Assurance
@@ -99,9 +104,10 @@
                         <i class="fa-solid fa-map-location-dot text-purple-400"></i> Set Ride Details
                     </h3>
 
+                    <!-- Booking submission form mapping to BookingController POST mapping /book-ride -->
                     <form th:action="@{/book-ride}" method="post" class="flex flex-col gap-5">
                         
-                        <!-- Pickup -->
+                        <!-- Pickup Location details input -->
                         <div>
                             <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Pickup Location</label>
                             <div class="relative">
@@ -113,7 +119,7 @@
                             </div>
                         </div>
 
-                        <!-- Dropoff -->
+                        <!-- Dropoff Destination details input -->
                         <div>
                             <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Drop-off Destination</label>
                             <div class="relative">
@@ -125,14 +131,14 @@
                             </div>
                         </div>
 
-                        <!-- Departure Date -->
+                        <!-- Departure Date selection -->
                         <div>
                             <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Departure Date</label>
                             <input type="date" name="pickupDate" required 
                                    class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition duration-200">
                         </div>
 
-                        <!-- Vehicle Tier Select -->
+                        <!-- Vehicle Tier category class modifier selection -->
                         <div>
                             <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Vehicle Class Tier</label>
                             <select id="vehicleType" name="vehicleType" required 
@@ -143,14 +149,14 @@
                             </select>
                         </div>
 
-                        <!-- Notes -->
+                        <!-- Optional driver special comments or instructions -->
                         <div>
                             <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Driver Instructions (Optional)</label>
                             <textarea name="notes" rows="2" placeholder="e.g. Flight code, landmarks, special requests..." 
                                       class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition duration-200"></textarea>
                         </div>
 
-                        <!-- Book and submit -->
+                        <!-- Submit button leading user directly to checkout payment summary -->
                         <div class="border-t border-slate-800 mt-4 pt-6">
                             <button type="submit" 
                                     class="w-full bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-350 hover:to-amber-450 text-slate-950 font-extrabold text-sm py-4 rounded-xl shadow-lg hover:shadow-yellow-500/20 hover:scale-[1.01] transition-all duration-300 flex items-center justify-center gap-2">
