@@ -68,6 +68,15 @@ public class BookingController {
             return "redirect:/user/login";
         }
 
+        // TODO (dev): Temporary test validation to demonstrate validation errors.
+        // Remove this before production. Submitting a booking with pickup="trigger-validation-error"
+        // will show the validation message below.
+        if (pickup != null && "trigger-validation-error".equalsIgnoreCase(pickup.trim())) {
+            model.addAttribute("error", "Validation error: pickup value not accepted (test).");
+            model.addAttribute("user", UserView.from(user));
+            return "book-ride";
+        }
+
         if (pickup == null || pickup.isBlank() || dropoff == null || dropoff.isBlank()) {
             model.addAttribute("error", "Pickup and Drop-off locations are required.");
             model.addAttribute("user", UserView.from(user));
