@@ -1,37 +1,43 @@
-# 🚖 TaxiGo – Premium Ride-Hailing & Booking Platform
+# <p align="center">🚖 TaxiGo – Premium Ride-Hailing & Fleet Platform</p>
 
-Welcome to **TaxiGo**, a modern, lightweight, high-performance ride-hailing and fleet booking management system. Designed with a stunning, premium dark-theme glassmorphic interface, TaxiGo leverages Spring Boot and Thymeleaf on the backend, styled with utility-first Tailwind CSS on the frontend. It operates with a robust file-based custom data storage layer to model classic Object-Oriented Programming (OOP) concepts.
+<p align="center">
+  <img src="https://img.shields.io/badge/Java-17-orange?style=for-the-badge&logo=java" alt="Java 17">
+  <img src="https://img.shields.io/badge/Spring%20Boot-4.0.6-brightgreen?style=for-the-badge&logo=springboot" alt="Spring Boot 4.0.6">
+  <img src="https://img.shields.io/badge/Thymeleaf-HTML5-blue?style=for-the-badge&logo=thymeleaf" alt="Thymeleaf HTML5">
+  <img src="https://img.shields.io/badge/Tailwind%20CSS-Modern-38B2AC?style=for-the-badge&logo=tailwindcss" alt="Tailwind CSS">
+</p>
+
+<p align="center">
+  Welcome to <b>TaxiGo</b>, a lightweight, high-performance ride-hailing and fleet booking management system. Featuring an ultra-premium, dark-theme glassmorphic interface, TaxiGo leverages Spring Boot and Thymeleaf on the backend, beautifully styled with utility-first Tailwind CSS on the frontend. The platform operates with a custom file-based data storage architecture designed specifically to model real-world Object-Oriented Programming (OOP) concepts.
+</p>
 
 ---
 
-## 🚀 Key Features
+## 🚀 Core Features
 
-- **Premium Modern Glassmorphism UI**: Beautiful dark-mode design with glowing amber accents, micro-animations, smooth hover states, and complete responsiveness across mobile, tablet, and desktop viewports.
-- **Robust Passenger & Membership System**:
-  - **Regular Passengers**: Standard ride-hailing profile with address and payment method options.
-  - **Premium Passengers**: Tiered membership system (e.g. *GOLD* level) offering exclusive discount rates, loyalty point rewards, and customized experiences.
-- **Intuitive Booking & Fare Calculation Engine**:
-  - Direct booking form with distance estimation and dynamic fare computation.
-  - Custom vehicle classes (Sedan, SUV, Luxury) with distinct pricing multipliers.
-- **Secure Mock Payment Gateway**: Seamless integration from ride booking to payment simulation, issuing status updates and digital transaction records.
-- **Locked Support Center (Restricted Message Box)**:
+- 💎 **Premium Glassmorphism UI**: High-end dark-mode design with glowing HSL amber accents, subtle micro-animations, smooth hover scaling, and full responsive layouts designed for mobile, tablet, and desktop viewports.
+- 👥 **Advanced Membership Matrix**:
+  - **Regular Passengers**: Standard profiles holding preferences, default addresses, and preferred payment systems.
+  - **Premium Passengers**: Tiered membership tracking (e.g. VIP Level *GOLD*) offering automatic fare discounts, dynamic loyalty point rewards, and customized dashboard cards.
+- 🧮 **Dynamic Fare Engine**: Dynamic calculations based on direct distances, ride categories (Sedan, SUV, Luxury), and passenger loyalty coefficients.
+- 💳 **Mock Transaction Gateway**: Full payment state flow simulation resulting in logged receipts, booking status changes, and transaction records.
+- 🔒 **Secure Support Center (Restricted Form)**:
   - Supports registered customer inquiries directly to the support desk.
   - Guests are greeted with a beautiful locked lock-screen block prompting them to sign in or register.
   - Autocomplete forms for authenticated users with read-only name and email validation.
-- **Stat-Rich Administrator Dashboard**:
-  - Provides a single-pane-of-glass overview of system activities.
-  - Displays dynamic analytics: total booking counts, gross platform revenue, registered user statistics, active taxis, and logs.
-  - Allows full CRUD management of passengers and premium riders.
+- 📊 **Insight-Rich Admin Console**: Single-pane analytics tracking platform revenue, total bookings, active vehicle inventory, and user CRUD logs.
 
 ---
 
-## 📂 Project Directory Structure
+## 📂 Project Anatomy
+
+Below is the directory mapping for the core system components:
 
 ```text
 TaxiGo/
 ├── data/                           # Plain Text Database Files (File-Based Data Store)
-│   ├── booking.txt                 # Booking transactions
-│   ├── contacts.txt                # Contact messages
+│   ├── booking.txt                 # Booking transaction records
+│   ├── contacts.txt                # Contact message support tickets
 │   ├── payments.txt                # Payment log records
 │   ├── taxi.txt                    # Active taxi fleets list
 │   └── users.txt                   # Customers (Regular & Premium Passengers)
@@ -100,72 +106,57 @@ TaxiGo/
 
 ---
 
-## 🛠️ Technology Stack
+## 💎 OOP Design Showcase
 
-- **Backend**: Spring Boot 4.x (MVC, Thymeleaf, Web DevTools)
-- **Frontend**: HTML5, Thymeleaf Template Engine, Vanilla CSS + Tailwind CSS integration, FontAwesome 6 icons.
-- **JDK**: Java 17
-- **Build Tool**: Maven 3.x
-- **Database/Persistence**: Plain Text Flat Files (delimited text architecture inside `data/`)
+The system's codebase demonstrates robust **Object-Oriented Programming (OOP)** patterns:
 
----
-
-## 💎 OOP Concepts Illustrated
-
-The TaxiGo codebase is meticulously engineered as a showcase of core **Object-Oriented Programming (OOP)** principles:
-
-1. **Inheritance**: The domain models use inheritance cleanly. `User` is an abstract base class holding shared attributes (ID, Name, Email, Password, Phone, etc.). `Passenger` (standard regular customer) and `PremiumPassenger` (VIP level tracking) extend `User` to add specific metadata fields.
-2. **Polymorphism**:
-   - Class polymorphism is demonstrated in `UserFileHandler` parsing and saving lists of `User` objects polymorphically as either standard or premium passenger entities based on data tags.
-   - Dynamic fare computations apply rate multipliers polymorphically based on the concrete runtime type of the passenger logged in.
-3. **Encapsulation**: Strict domain-driven encapsulation using private fields, accessor/mutator methods, and protecting internal class structures from leakages.
-4. **Composition & Dependency Injection**: Controllers dynamically collaborate with file handlers and calculators polymorphically via loose constructor-based composition, ensuring clean decoupling of concerns.
+*   **Inheritance**: Modifies common properties cleanly via the abstract parent `User` class. Extensions such as `Passenger` and `PremiumPassenger` introduce custom data fields without duplicating boilerplate characteristics.
+*   **Polymorphism**:
+    *   File parsing handlers leverage subclass mapping during file read/write iterations based on class tag identifiers.
+    *   Fare pricing engines dynamically apply multipliers depending on the runtime instance type of the active user session.
+*   **Encapsulation**: Strict use of accessor/mutator structures to protect field values, coupled with domain model helper methods to encapsulate state changes safely.
+*   **Composition & Dependency Injection**: Controllers collaborate polymorphically with handlers and calculators via constructor injection, maintaining clean separation of concerns.
 
 ---
 
-## ⚙️ Configuration & Quick Start
+## ⚙️ Quick Start & Local Setup
 
-### 1. Prerequisites
-- **Java SE Development Kit (JDK)**: Version 17 or higher.
-- **Apache Maven**: Make sure Maven is installed and loaded in your system environment variable path.
+### 📋 Prerequisites
+- **JDK 17** or higher installed.
+- **Maven 3.x** configured in your environment system path.
 
-### 2. Configure Port & Context Path
-By default, the application runs under:
-- **Port**: `8080` (can be configured in `src/main/resources/application.properties` with `server.port`)
-- **Context Path**: `/taxi`
+### 🔌 Running the Server
 
-### 3. Build & Run Application
-From the project root directory, run:
-```bash
-# Clean previous builds and compile
-mvn clean compile
-
-# Launch the Spring Boot Web Server
-mvn spring-boot:run
-```
-
-Once successfully started, open your browser and navigate to:
-👉 **[http://localhost:8080/taxi](http://localhost:8080/taxi)**
+1. **Clean & Compile**:
+   ```bash
+   mvn clean compile
+   ```
+2. **Start Server**:
+   ```bash
+   mvn spring-boot:run
+   ```
+3. **Open Platform**:
+   Navigate to 👉 **[http://localhost:8080/taxi](http://localhost:8080/taxi)** (default port `8080`, base context `/taxi`).
 
 ---
 
-## 🔐 Credentials for Testing
+## 🔐 Credentials Information
 
-| Role | Username / Email | Password |
-| :--- | :--- | :--- |
-| **Administrator** | `admin@taxigo.lk` | `admin123` |
-| **Registered Customer** | `buddhima@gmail.com` | `wasd1211` |
+> [!IMPORTANT]
+> To ensure platform security and support developer guidelines, raw passwords and sensitive test credentials are not stored publicly.
+> - **Default Administrative Accounts**: Internal default admin users are configured securely inside [UserController.java](file:///d:/Git%20Uploads/TaxiGo/src/main/java/com/taxi/taxibookingplatform/controller/UserController.java).
+> - **Registered Customer Accounts**: Active test passenger details can be read from the local file-based data store at [data/users.txt](file:///d:/Git%20Uploads/TaxiGo/data/users.txt), or new accounts can be registered on-the-fly via the Sign Up form.
 
 ---
 
-## 📄 Main Mapped Endpoints
+## 📄 Main Route Endpoint Reference
 
-| URL Route | Request Method | Accessible By | Description |
+| URL Route | Request Method | Allowed Role | Feature Summary |
 | :--- | :---: | :---: | :--- |
-| `/taxi/` | `GET` | All | Core Landing Page |
-| `/taxi/user/login` | `GET` / `POST` | All | Customer Sign In |
-| `/taxi/user/register` | `GET` / `POST` | All | Customer Account Registration |
-| `/taxi/user/dashboard` | `GET` | Customer | Customer Ride Logs Dashboard |
-| `/taxi/book-ride` | `GET` | Customer | Interactive Ride Request Form |
-| `/taxi/contact` | `GET` / `POST` | Logged Customers Only | Secure Customer Support Inquiry Center |
-| `/taxi/admin/dashboard` | `GET` | Admin | Comprehensive Stats & Activity Monitor |
+| `/taxi/` | `GET` | All | Interactive Core Landing Page |
+| `/taxi/user/login` | `GET` / `POST` | All | Account Login Portal |
+| `/taxi/user/register` | `GET` / `POST` | All | New Account Sign Up |
+| `/taxi/user/dashboard` | `GET` | Passenger | Passenger Activity dashboard |
+| `/taxi/book-ride` | `GET` | Passenger | Dynamic Fare Booking Form |
+| `/taxi/contact` | `GET` / `POST` | Logged In Only | Secure Contact and Message Center |
+| `/taxi/admin/dashboard` | `GET` | Administrator | Stats Center & User CRUD Controls |
