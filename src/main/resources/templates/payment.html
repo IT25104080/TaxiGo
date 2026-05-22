@@ -76,25 +76,31 @@
                         <div class="absolute w-[200px] h-[200px] rounded-full bg-purple-500/20 blur-xl top-[-30%] right-[-10%] pointer-events-none"></div>
                     </div>
 
+                    <!-- Alert States -->
+                    <div th:if="${error}" class="bg-rose-500/10 text-rose-450 border border-rose-500/20 p-3.5 mb-5 rounded-xl text-xs font-semibold flex items-center gap-2">
+                        <i class="fa-solid fa-circle-exclamation text-rose-400 text-sm"></i>
+                        <span th:text="${error}"></span>
+                    </div>
+
                     <!-- Payment Entry Form (Direct action) -->
                     <form th:action="@{/payment/complete}" method="post" class="flex flex-col gap-4">
                         <input type="hidden" name="bookingId" th:value="${booking.bookingId}">
 
                         <div>
                             <label class="block text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-wider">Card Number</label>
-                            <input type="text" id="input-card-number" placeholder="4111 2222 3333 4567" required
+                            <input type="text" id="input-card-number" name="cardNumber" placeholder="4111 2222 3333 4567" required
                                    class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none transition duration-200">
                         </div>
 
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-wider">Expiration Date</label>
-                                <input type="text" id="input-card-expiry" placeholder="12 / 29" required
+                                <input type="text" id="input-card-expiry" name="expiryDate" placeholder="12 / 29" required
                                        class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none transition duration-200">
                             </div>
                             <div>
                                 <label class="block text-[10px] text-slate-500 font-bold mb-1 uppercase tracking-wider">CVV Security</label>
-                                <input type="password" placeholder="•••" required maxlength="3"
+                                <input type="password" name="cvv" placeholder="•••" required maxlength="4"
                                        class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none transition duration-200">
                             </div>
                         </div>

@@ -19,8 +19,31 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * ============================================================================
+ * OOP CONCEPT: DEPENDENCY INJECTION (DI) & OBJECT COMPOSITION
+ * ============================================================================
+ * Leverages constructor dependency injection to compose and coordinate administrative 
+ * operations across bookings, users, messaging, and vehicle services.
+ * ============================================================================
+ */
 @Controller
 public class AdminController {
+
+    private final BookingFileHandler bookingFileHandler;
+    private final UserFileHandler userFileHandler;
+    private final ContactFileHandler contactFileHandler;
+    private final TaxiFileHandler taxiFileHandler;
+
+    public AdminController(BookingFileHandler bookingFileHandler, 
+                           UserFileHandler userFileHandler, 
+                           ContactFileHandler contactFileHandler, 
+                           TaxiFileHandler taxiFileHandler) {
+        this.bookingFileHandler = bookingFileHandler;
+        this.userFileHandler = userFileHandler;
+        this.contactFileHandler = contactFileHandler;
+        this.taxiFileHandler = taxiFileHandler;
+    }
 
     private boolean isNotAdmin(HttpSession session) {
         Object admin = session.getAttribute("adminLoggedIn");
@@ -34,10 +57,10 @@ public class AdminController {
         }
 
         // Fetch bookings, users, contact messages, and taxis
-        List<Booking> bookings = BookingFileHandler.getAllBookings();
-        List<User> users = UserFileHandler.getAllUsers();
-        List<ContactMessage> messages = ContactFileHandler.getAllMessages();
-        List<Taxi> taxis = TaxiFileHandler.getAllTaxis();
+        List<Booking> bookings = bookingFileHandler.getAllBookings();
+        List<User> users = userFileHandler.getAllUsers();
+        List<ContactMessage> messages = contactFileHandler.getAllMessages();
+        List<Taxi> taxis = taxiFileHandler.getAllTaxis();
 
         // Calculate statistics
         long totalBookings = bookings.size();
@@ -73,7 +96,7 @@ public class AdminController {
         if (isNotAdmin(session)) {
             return "redirect:/user/login";
         }
-        BookingFileHandler.updateStatus(bookingId, status);
+        bookingFileHandler.updateStatus(bookingId, status);
         return "redirect:/admin/dashboard?success=statusUpdated";
     }
 
@@ -82,7 +105,7 @@ public class AdminController {
         if (isNotAdmin(session)) {
             return "redirect:/user/login";
         }
-        UserFileHandler.deleteUser(id);
+        userFileHandler.deleteUser(id);
         return "redirect:/admin/dashboard?success=userDeleted";
     }
 
@@ -91,7 +114,7 @@ public class AdminController {
         if (isNotAdmin(session)) {
             return "redirect:/user/login";
         }
-        ContactFileHandler.deleteMessage(id);
+        contactFileHandler.deleteMessage(id);
         return "redirect:/admin/dashboard?success=messageDeleted";
     }
 
@@ -111,7 +134,7 @@ public class AdminController {
         }
 
         if (modelName == null || modelName.isBlank()) {
-            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Vehicle model name is required.", java.nio.charset.StandardCharsets.UTF_8);
+            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Chassis model name is required.", java.nio.charset.StandardCharsets.UTF_8);
         }
         if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidLicensePlate(licensePlate)) {
             return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Invalid license plate format. Expected standard Sri Lankan format (e.g., WP CAD-4567 or CAD-4567).", java.nio.charset.StandardCharsets.UTF_8);
@@ -127,9 +150,9 @@ public class AdminController {
         }
 
         String img = (imageUrl == null) ? "" : imageUrl.trim();
-        String id = "TX" + (1000 + TaxiFileHandler.getAllTaxis().size() + 1);
+        String id = "TX" + (1000 + taxiFileHandler.getAllTaxis().size() + 1);
         Taxi taxi = new Taxi(id, modelName, vehicleType, licensePlate, driverName, driverPhone, ratePerKm, status, img);
-        TaxiFileHandler.addTaxi(taxi);
+        taxiFileHandler.addTaxi(taxi);
         return "redirect:/admin/dashboard?success=taxiAdded";
     }
 
@@ -167,7 +190,7 @@ public class AdminController {
 
         String img = (imageUrl == null) ? "" : imageUrl.trim();
         Taxi taxi = new Taxi(id, modelName, vehicleType, licensePlate, driverName, driverPhone, ratePerKm, status, img);
-        TaxiFileHandler.updateTaxi(taxi);
+        taxiFileHandler.updateTaxi(taxi);
         return "redirect:/admin/dashboard?success=taxiUpdated";
     }
 
@@ -176,7 +199,7 @@ public class AdminController {
         if (isNotAdmin(session)) {
             return "redirect:/user/login";
         }
-        TaxiFileHandler.deleteTaxi(id);
+        taxiFileHandler.deleteTaxi(id);
         return "redirect:/admin/dashboard?success=taxiDeleted";
     }
 

@@ -2,6 +2,24 @@ package com.taxi.taxibookingplatform.model;
 
 import java.time.LocalDate;
 
+/**
+ * ============================================================================
+ * OOP CONCEPTS: INHERITANCE, ENCAPSULATION & POLYMORPHISM
+ * ============================================================================
+ * 1. INHERITANCE:
+ *    Like 'Passenger', 'PremiumPassenger' extends 'User' to inherit core identification 
+ *    attributes. It represents a specialized subclass that introduces premium privileges.
+ * 
+ * 2. ENCAPSULATION:
+ *    The custom membership variables (membershipLevel, discountRate, loyaltyPoints) 
+ *    are protected privately. They can only be manipulated using explicit method interfaces 
+ *    like 'addLoyaltyPoints()' and public getters/setters.
+ * 
+ * 3. POLYMORPHISM:
+ *    Overrides abstract definitions to return customized display descriptions and roles 
+ *    ('PREMIUM'), demonstrating dynamic binding.
+ * ============================================================================
+ */
 public class PremiumPassenger extends User {
 
     private String membershipLevel;

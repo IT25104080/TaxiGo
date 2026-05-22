@@ -1,30 +1,50 @@
 package com.taxi.taxibookingplatform.service;
 
 import com.taxi.taxibookingplatform.model.Booking;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * ============================================================================
+ * OOP CONCEPT: ENCAPSULATION & SINGLETON SERVICE PATTERN
+ * ============================================================================
+ * By converting this class into a Spring-managed '@Service' bean and removing the 
+ * 'static' modifier from all methods, we shift from a procedural paradigm to an 
+ * Object-Oriented component architecture.
+ * 
+ * 1. ENCAPSULATION:
+ *    The class encapsulates the details of persistence storage logic ('FILE_PATH') 
+ *    within instance-based methods. Objects that interact with this service do not 
+ *    need to know how the files are written or read.
+ * 
+ * 2. OBJECT COLLABORATION:
+ *    Controllers can compose this service as a collaborator bean via constructor-based 
+ *    Dependency Injection, promoting looser coupling and high cohesion.
+ * ============================================================================
+ */
+@Service
 public class BookingFileHandler {
 
-    private static final String FILE_PATH = "data/booking.txt";
+    private final String filePath = "data/booking.txt";
 
-    public static void addBooking(Booking booking) throws IOException {
+    public void addBooking(Booking booking) throws IOException {
         new File("data").mkdirs();
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
             writer.write(booking.toFileString());
             writer.newLine();
         }
     }
 
-    public static List<Booking> getAllBookings() throws IOException {
+    public List<Booking> getAllBookings() throws IOException {
         List<Booking> list = new ArrayList<>();
-        File file = new File(FILE_PATH);
+        File file = new File(filePath);
         if (!file.exists()) return list;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
@@ -36,22 +56,22 @@ public class BookingFileHandler {
         return list;
     }
 
-    public static List<Booking> getBookingsByUserId(String userId) throws IOException {
+    public List<Booking> getBookingsByUserId(String userId) throws IOException {
         return getAllBookings().stream()
                 .filter(b -> b.getUserId().equals(userId))
                 .toList();
     }
 
-    public static Booking getBookingById(String bookingId) throws IOException {
+    public Booking getBookingById(String bookingId) throws IOException {
         return getAllBookings().stream()
                 .filter(b -> b.getBookingId().equals(bookingId))
                 .findFirst()
                 .orElse(null);
     }
 
-    public static void updateStatus(String bookingId, String status) throws IOException {
+    public void updateStatus(String bookingId, String status) throws IOException {
         List<Booking> all = getAllBookings();
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, false))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, false))) {
             for (Booking b : all) {
                 Booking out = b.getBookingId().equals(bookingId)
                         ? new Booking(b.getBookingId(), b.getUserId(), b.getPickup(), b.getDropoff(),
@@ -64,7 +84,7 @@ public class BookingFileHandler {
         }
     }
 
-    public static void cancelBooking(String bookingId, String userId) throws IOException {
+    public void cancelBooking(String bookingId, String userId) throws IOException {
         Booking b = getBookingById(bookingId);
         if (b != null && b.getUserId().equals(userId) && !"CANCELLED".equals(b.getStatus())) {
             updateStatus(bookingId, "CANCELLED");

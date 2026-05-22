@@ -1,6 +1,7 @@
 package com.taxi.taxibookingplatform.service;
 
 import com.taxi.taxibookingplatform.model.ContactMessage;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -8,24 +9,34 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * ============================================================================
+ * OOP CONCEPT: ENCAPSULATION & SINGLETON SERVICE PATTERN
+ * ============================================================================
+ * 1. ENCAPSULATION:
+ *    Encapsulates contact messages persistent operations and list sorting algorithms.
+ *    External classes have no access to the underlying flat file structure.
+ * ============================================================================
+ */
+@Service
 public class ContactFileHandler {
 
-    private static final String FILE_PATH = "data/contacts.txt";
+    private final String filePath = "data/contacts.txt";
 
-    public static void save(ContactMessage msg) throws IOException {
+    public void save(ContactMessage msg) throws IOException {
         new File("data").mkdirs();
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
             writer.write(msg.toFileString());
             writer.newLine();
         }
     }
 
-    public static List<ContactMessage> getAllMessages() throws IOException {
+    public List<ContactMessage> getAllMessages() throws IOException {
         List<ContactMessage> list = new ArrayList<>();
-        File file = new File(FILE_PATH);
+        File file = new File(filePath);
         if (!file.exists()) return list;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
@@ -45,9 +56,9 @@ public class ContactFileHandler {
         return list;
     }
 
-    public static void deleteMessage(String id) throws IOException {
+    public void deleteMessage(String id) throws IOException {
         List<ContactMessage> all = getAllMessages();
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, false))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, false))) {
             for (ContactMessage msg : all) {
                 if (!msg.getId().equals(id)) {
                     writer.write(msg.toFileString());

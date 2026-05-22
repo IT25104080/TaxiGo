@@ -2,6 +2,27 @@ package com.taxi.taxibookingplatform.model;
 
 import java.time.LocalDate;
 
+/**
+ * ============================================================================
+ * OOP CONCEPTS: INHERITANCE, ENCAPSULATION & POLYMORPHISM
+ * ============================================================================
+ * 1. INHERITANCE:
+ *    The 'Passenger' class extends 'User' ('Passenger extends User'). This means 
+ *    it inherits all fields (userId, name, etc.) and methods from 'User', 
+ *    eliminating code duplication and establishing an "IS-A" relationship 
+ *    (a Passenger IS-A User).
+ * 
+ * 2. ENCAPSULATION:
+ *    The class encapsulates specific fields 'address' and 'preferredPayment' 
+ *    privately, providing public accessors to prevent unauthorized tampering.
+ * 
+ * 3. POLYMORPHISM:
+ *    The methods 'getRole()', 'getDisplayInfo()', and 'toFileString()' override 
+ *    the base class/interface signatures. When these methods are invoked on a 
+ *    'User' reference dynamically containing a 'Passenger' object, runtime 
+ *    polymorphism guarantees that 'Passenger''s implementations are executed.
+ * ============================================================================
+ */
 public class Passenger extends User {
 
     private String address;

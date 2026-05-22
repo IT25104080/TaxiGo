@@ -21,8 +21,26 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.UUID;
 
+/**
+ * ============================================================================
+ * OOP CONCEPT: DEPENDENCY INJECTION (DI) & OBJECT COMPOSITION
+ * ============================================================================
+ * Instead of statically binding to procedural helpers, this controller uses 
+ * Dependency Injection (DI) through constructor arguments. It is composed of 
+ * its collaborators ('BookingFileHandler' and 'UserFileHandler'), showing low 
+ * coupling, loose cohesion, and object modularity.
+ * ============================================================================
+ */
 @Controller
 public class BookingController {
+
+    private final BookingFileHandler bookingFileHandler;
+    private final UserFileHandler userFileHandler;
+
+    public BookingController(BookingFileHandler bookingFileHandler, UserFileHandler userFileHandler) {
+        this.bookingFileHandler = bookingFileHandler;
+        this.userFileHandler = userFileHandler;
+    }
 
     @GetMapping("/book-ride")
     public String bookRideForm(HttpSession session, Model model) throws IOException {
@@ -96,37 +114,8 @@ public class BookingController {
                 notes != null ? notes.trim() : "",
                 LocalDateTime.now()
         );
-        BookingFileHandler.addBooking(booking);
+        bookingFileHandler.addBooking(booking);
         return "redirect:/payment?bookingId=" + booking.getBookingId();
-    }
-
-    @GetMapping("/payment")
-    public String showPaymentPortal(@RequestParam String bookingId, HttpSession session, Model model) throws IOException {
-        User user = getLoggedInUser(session);
-        if (user == null) {
-            return "redirect:/user/login";
-        }
-        Booking booking = BookingFileHandler.getBookingById(bookingId);
-        if (booking == null || !booking.getUserId().equals(user.getUserId())) {
-            return "redirect:/user/dashboard";
-        }
-        model.addAttribute("booking", booking);
-        model.addAttribute("user", UserView.from(user));
-        return "payment";
-    }
-
-    @PostMapping("/payment/complete")
-    public String completePayment(@RequestParam String bookingId, HttpSession session) throws IOException {
-        User user = getLoggedInUser(session);
-        if (user == null) {
-            return "redirect:/user/login";
-        }
-        Booking booking = BookingFileHandler.getBookingById(bookingId);
-        if (booking != null && booking.getUserId().equals(user.getUserId())) {
-            BookingFileHandler.updateStatus(bookingId, "CONFIRMED");
-            return "redirect:/user/dashboard?booked=true";
-        }
-        return "redirect:/user/dashboard";
     }
 
     @PostMapping("/user/bookings/cancel")
@@ -135,13 +124,13 @@ public class BookingController {
         if (user == null) {
             return "redirect:/user/login";
         }
-        BookingFileHandler.cancelBooking(bookingId, user.getUserId());
+        bookingFileHandler.cancelBooking(bookingId, user.getUserId());
         return "redirect:/user/dashboard";
     }
 
     private User getLoggedInUser(HttpSession session) throws IOException {
         Object userId = session.getAttribute(SessionKeys.USER_ID);
         if (userId == null) return null;
-        return UserFileHandler.getUserById(userId.toString());
+        return userFileHandler.getUserById(userId.toString());
     }
 }

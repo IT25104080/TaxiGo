@@ -3,6 +3,8 @@ package com.taxi.taxibookingplatform.controller;
 import com.taxi.taxibookingplatform.model.ContactMessage;
 import com.taxi.taxibookingplatform.service.ContactFileHandler;
 import com.taxi.taxibookingplatform.service.TaxiFileHandler;
+import com.taxi.taxibookingplatform.service.SessionKeys;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +15,24 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * ============================================================================
+ * OOP CONCEPT: DEPENDENCY INJECTION (DI) & OBJECT COMPOSITION
+ * ============================================================================
+ * Collaborates with TaxiFileHandler and ContactFileHandler polymorphically via 
+ * loose constructor composition.
+ * ============================================================================
+ */
 @Controller
 public class HomeController {
+
+    private final TaxiFileHandler taxiFileHandler;
+    private final ContactFileHandler contactFileHandler;
+
+    public HomeController(TaxiFileHandler taxiFileHandler, ContactFileHandler contactFileHandler) {
+        this.taxiFileHandler = taxiFileHandler;
+        this.contactFileHandler = contactFileHandler;
+    }
 
     @GetMapping("/")
     public String home() {
@@ -28,7 +46,7 @@ public class HomeController {
 
     @GetMapping("/taxis")
     public String taxis(Model model) throws IOException {
-        model.addAttribute("taxis", TaxiFileHandler.getAllTaxis());
+        model.addAttribute("taxis", taxiFileHandler.getAllTaxis());
         return "taxis";
     }
 
@@ -41,7 +59,6 @@ public class HomeController {
     public String services() {
         return "services";
     }
-
 
     @GetMapping("/faq")
     public String faq() {
@@ -59,7 +76,13 @@ public class HomeController {
             @RequestParam String email,
             @RequestParam String subject,
             @RequestParam String message,
+            HttpSession session,
             Model model) throws IOException {
+
+        if (session.getAttribute(SessionKeys.USER_ID) == null) {
+            model.addAttribute("error", "You must be logged in to send a support message.");
+            return "contact";
+        }
 
         if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidName(name)) {
             model.addAttribute("error", "Name must contain only alphabetic characters and spaces (2 to 50 characters).");
@@ -78,7 +101,7 @@ public class HomeController {
                 "MSG" + UUID.randomUUID().toString().replace("-", "").substring(0, 8),
                 name, email, subject, message, LocalDateTime.now()
         );
-        ContactFileHandler.save(msg);
+        contactFileHandler.save(msg);
         model.addAttribute("success", true);
         return "contact";
     }

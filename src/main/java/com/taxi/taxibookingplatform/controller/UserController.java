@@ -18,8 +18,25 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * ============================================================================
+ * OOP CONCEPT: DEPENDENCY INJECTION (DI) & OBJECT COMPOSITION
+ * ============================================================================
+ * Decouples user registration, authentication, dashboarding, and profile management 
+ * by injecting instantiable collaborator beans ('UserFileHandler' and 'BookingFileHandler') 
+ * via constructor injection.
+ * ============================================================================
+ */
 @Controller
 public class UserController {
+
+    private final UserFileHandler userFileHandler;
+    private final BookingFileHandler bookingFileHandler;
+
+    public UserController(UserFileHandler userFileHandler, BookingFileHandler bookingFileHandler) {
+        this.userFileHandler = userFileHandler;
+        this.bookingFileHandler = bookingFileHandler;
+    }
 
     @GetMapping("/user/login")
     public String showLogin(@RequestParam(required = false) String registered, Model model) {
@@ -42,7 +59,7 @@ public class UserController {
             return "redirect:/admin/dashboard";
         }
 
-        User user = UserFileHandler.getUserByEmail(email);
+        User user = userFileHandler.getUserByEmail(email);
         if (user == null || !new CustomerLogin().login(user, email, password)) {
             model.addAttribute("error", "Invalid email or password");
             if ("book".equals(redirect)) {
@@ -88,7 +105,7 @@ public class UserController {
             return "User/register";
         }
 
-        if (UserFileHandler.getUserByEmail(email) != null) {
+        if (userFileHandler.getUserByEmail(email) != null) {
             model.addAttribute("error", "An account with this email already exists");
             return "User/register";
         }
@@ -102,7 +119,7 @@ public class UserController {
             user = new Passenger(userId, name, email, password, phone,
                     LocalDate.now(), "", "CARD");
         }
-        UserFileHandler.addUser(user);
+        userFileHandler.addUser(user);
         return "redirect:/user/login?registered";
     }
 
@@ -116,7 +133,7 @@ public class UserController {
             return "redirect:/user/login";
         }
         model.addAttribute("user", UserView.from(user));
-        model.addAttribute("bookings", BookingFileHandler.getBookingsByUserId(user.getUserId()));
+        model.addAttribute("bookings", bookingFileHandler.getBookingsByUserId(user.getUserId()));
         if (booked != null) {
             model.addAttribute("message", "Your ride has been booked successfully!");
         }
@@ -130,7 +147,7 @@ public class UserController {
             return "redirect:/user/login";
         }
         model.addAttribute("user", UserView.from(user));
-        model.addAttribute("bookings", BookingFileHandler.getBookingsByUserId(user.getUserId()));
+        model.addAttribute("bookings", bookingFileHandler.getBookingsByUserId(user.getUserId()));
         return "User/profile";
     }
 
@@ -151,33 +168,33 @@ public class UserController {
         if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidName(name)) {
             model.addAttribute("error", "Name must contain only alphabetic characters and spaces (2 to 50 characters).");
             model.addAttribute("user", UserView.from(existing));
-            model.addAttribute("bookings", BookingFileHandler.getBookingsByUserId(existing.getUserId()));
+            model.addAttribute("bookings", bookingFileHandler.getBookingsByUserId(existing.getUserId()));
             return "User/profile";
         }
         if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidEmail(email)) {
             model.addAttribute("error", "Please provide a valid email address.");
             model.addAttribute("user", UserView.from(existing));
-            model.addAttribute("bookings", BookingFileHandler.getBookingsByUserId(existing.getUserId()));
+            model.addAttribute("bookings", bookingFileHandler.getBookingsByUserId(existing.getUserId()));
             return "User/profile";
         }
         if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidPhone(phone)) {
             model.addAttribute("error", "Please enter a valid Sri Lankan phone number.");
             model.addAttribute("user", UserView.from(existing));
-            model.addAttribute("bookings", BookingFileHandler.getBookingsByUserId(existing.getUserId()));
+            model.addAttribute("bookings", bookingFileHandler.getBookingsByUserId(existing.getUserId()));
             return "User/profile";
         }
         if (password != null && !password.isBlank() && !com.taxi.taxibookingplatform.util.ValidationUtils.isValidPassword(password)) {
             model.addAttribute("error", "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one numeric digit, and one special character.");
             model.addAttribute("user", UserView.from(existing));
-            model.addAttribute("bookings", BookingFileHandler.getBookingsByUserId(existing.getUserId()));
+            model.addAttribute("bookings", bookingFileHandler.getBookingsByUserId(existing.getUserId()));
             return "User/profile";
         }
 
-        User duplicate = UserFileHandler.getUserByEmail(email);
+        User duplicate = userFileHandler.getUserByEmail(email);
         if (duplicate != null && !duplicate.getUserId().equals(existing.getUserId())) {
             model.addAttribute("error", "An account with this email already exists");
             model.addAttribute("user", UserView.from(existing));
-            model.addAttribute("bookings", BookingFileHandler.getBookingsByUserId(existing.getUserId()));
+            model.addAttribute("bookings", bookingFileHandler.getBookingsByUserId(existing.getUserId()));
             return "User/profile";
         }
 
@@ -196,7 +213,7 @@ public class UserController {
             model.addAttribute("user", UserView.from(existing));
             return "User/profile";
         }
-        UserFileHandler.updateUser(updated);
+        userFileHandler.updateUser(updated);
         return "redirect:/user/dashboard?success=profileUpdated";
     }
 
@@ -206,7 +223,7 @@ public class UserController {
         if (user == null) {
             return "redirect:/user/login";
         }
-        UserFileHandler.deleteUser(user.getUserId());
+        userFileHandler.deleteUser(user.getUserId());
         session.invalidate();
         return "redirect:/user/login?success=accountDeleted";
     }
@@ -222,12 +239,12 @@ public class UserController {
         if (userId == null) {
             return null;
         }
-        return UserFileHandler.getUserById(userId.toString());
+        return userFileHandler.getUserById(userId.toString());
     }
 
     @GetMapping("/users")
     public String viewAllUsers(Model model) throws IOException {
-        List<User> userList = UserFileHandler.getAllUsers();
+        List<User> userList = userFileHandler.getAllUsers();
         model.addAttribute("userList", userList);
         return "user-list";
     }
@@ -246,7 +263,7 @@ public class UserController {
 
         Passenger p = new Passenger(userId, name, email, password, phone,
                                     LocalDate.now(), address, preferredPayment);
-        UserFileHandler.addUser(p);
+        userFileHandler.addUser(p);
         return "redirect:/users";
     }
 
@@ -260,13 +277,13 @@ public class UserController {
         PremiumPassenger pp = new PremiumPassenger(userId, name, email, password, phone,
                                                     LocalDate.now(), membershipLevel,
                                                     discountRate, loyaltyPoints);
-        UserFileHandler.addUser(pp);
+        userFileHandler.addUser(pp);
         return "redirect:/users";
     }
 
     @GetMapping("/users/edit/{id}")
     public String showEditForm(@PathVariable String id, Model model) throws IOException {
-        User user = UserFileHandler.getUserById(id);
+        User user = userFileHandler.getUserById(id);
         if (user instanceof PremiumPassenger) {
             model.addAttribute("type", "PREMIUM");
             model.addAttribute("premiumPassenger", (PremiumPassenger) user);
@@ -288,7 +305,7 @@ public class UserController {
 
         Passenger p = new Passenger(userId, name, email, password, phone,
                                     LocalDate.parse(date), address, preferredPayment);
-        UserFileHandler.updateUser(p);
+        userFileHandler.updateUser(p);
         return "redirect:/users";
     }
 
@@ -303,13 +320,13 @@ public class UserController {
         PremiumPassenger pp = new PremiumPassenger(userId, name, email, password, phone,
                                                     LocalDate.parse(date), membershipLevel,
                                                     discountRate, loyaltyPoints);
-        UserFileHandler.updateUser(pp);
+        userFileHandler.updateUser(pp);
         return "redirect:/users";
     }
 
     @GetMapping("/users/delete/{id}")
     public String deleteUser(@PathVariable String id) throws IOException {
-        UserFileHandler.deleteUser(id);
+        userFileHandler.deleteUser(id);
         return "redirect:/users";
     }
 }

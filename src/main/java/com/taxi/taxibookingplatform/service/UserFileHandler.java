@@ -3,30 +3,45 @@ package com.taxi.taxibookingplatform.service;
 import com.taxi.taxibookingplatform.model.User;
 import com.taxi.taxibookingplatform.model.Passenger;
 import com.taxi.taxibookingplatform.model.PremiumPassenger;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ============================================================================
+ * OOP CONCEPT: ENCAPSULATION & SINGLETON SERVICE PATTERN
+ * ============================================================================
+ * 1. ENCAPSULATION:
+ *    Encapsulates raw data parsing (deserialization from CSV elements to Passenger 
+ *    or PremiumPassenger objects) and file manipulation. Clients of UserFileHandler 
+ *    only query clean abstractions like 'User' instead of raw text elements.
+ * 
+ * 2. OBJECT COMPOSITION:
+ *    Serves as an instantiable collaborator wired polymorphically.
+ * ============================================================================
+ */
+@Service
 public class UserFileHandler {
 
-    private static final String FILE_PATH = "data/users.txt";
+    private final String filePath = "data/users.txt";
 
-    public static void addUser(User user) throws IOException {
+    public void addUser(User user) throws IOException {
         new File("data").mkdirs();
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
             writer.write(user.toFileString());
             writer.newLine();
         }
     }
 
-    public static List<User> getAllUsers() throws IOException {
+    public List<User> getAllUsers() throws IOException {
         List<User> userList = new ArrayList<>();
-        File file = new File(FILE_PATH);
+        File file = new File(filePath);
         if (!file.exists()) return userList;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
@@ -55,23 +70,23 @@ public class UserFileHandler {
         return userList;
     }
 
-    public static User getUserById(String userId) throws IOException {
+    public User getUserById(String userId) throws IOException {
         for (User u : getAllUsers()) {
             if (u.getUserId().equals(userId)) return u;
         }
         return null;
     }
 
-    public static User getUserByEmail(String email) throws IOException {
+    public User getUserByEmail(String email) throws IOException {
         for (User u : getAllUsers()) {
             if (u.getEmail().equalsIgnoreCase(email)) return u;
         }
         return null;
     }
 
-    public static void updateUser(User updatedUser) throws IOException {
+    public void updateUser(User updatedUser) throws IOException {
         List<User> allUsers = getAllUsers();
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, false))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, false))) {
             for (User u : allUsers) {
                 writer.write(u.getUserId().equals(updatedUser.getUserId())
                              ? updatedUser.toFileString() : u.toFileString());
@@ -80,9 +95,9 @@ public class UserFileHandler {
         }
     }
 
-    public static void deleteUser(String userId) throws IOException {
+    public void deleteUser(String userId) throws IOException {
         List<User> allUsers = getAllUsers();
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, false))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, false))) {
             for (User u : allUsers) {
                 if (!u.getUserId().equals(userId)) {
                     writer.write(u.toFileString());
