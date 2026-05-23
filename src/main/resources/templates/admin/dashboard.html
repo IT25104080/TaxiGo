@@ -87,16 +87,16 @@
         <div class="bg-slate-900/40 border border-slate-850/80 rounded-3xl p-6 shadow-2xl">
             <!-- Tabs Headers -->
             <div class="flex items-center gap-4 border-b border-slate-800 pb-4 mb-8 overflow-x-auto select-none">
-                <button onclick="switchTab('tab-bookings')" id="btn-tab-bookings" class="tab-btn px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 bg-yellow-400 text-slate-950 shadow-lg">
+                <button onclick="switchTab('tab-bookings')" id="btn-tab-bookings" class="tab-btn px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 border border-yellow-400/20 bg-yellow-400/10 text-yellow-400 shadow-lg">
                     <i class="fa-solid fa-calendar-days"></i> Booking Database
                 </button>
-                <button onclick="switchTab('tab-users')" id="btn-tab-users" class="tab-btn px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/40">
+                <button onclick="switchTab('tab-users')" id="btn-tab-users" class="tab-btn px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 border border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30">
                     <i class="fa-solid fa-users-gear"></i> User Directory (<span th:text="${totalUsers}">0</span>)
                 </button>
-                <button onclick="switchTab('tab-taxis')" id="btn-tab-taxis" class="tab-btn px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/40">
+                <button onclick="switchTab('tab-taxis')" id="btn-tab-taxis" class="tab-btn px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 border border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30">
                     <i class="fa-solid fa-car"></i> Manage Fleet (<span th:text="${totalTaxis}">0</span>)
                 </button>
-                <button onclick="switchTab('tab-messages')" id="btn-tab-messages" class="tab-btn px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/40">
+                <button onclick="switchTab('tab-messages')" id="btn-tab-messages" class="tab-btn px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 border border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30">
                     <i class="fa-solid fa-envelope-open-text"></i> Feedback Messages
                 </button>
             </div>
@@ -544,12 +544,12 @@
 
             // Reset all buttons style
             document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.className = "tab-btn px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/40";
+                btn.className = "tab-btn px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 border border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30";
             });
 
             // Highlight active button
             const activeBtn = document.getElementById('btn-' + tabId);
-            activeBtn.className = "tab-btn px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 bg-yellow-400 text-slate-950 shadow-lg";
+            activeBtn.className = "tab-btn px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 border border-yellow-400/20 bg-yellow-400/10 text-yellow-400 shadow-lg";
         }
 
         // Intercept success parameters and trigger global showToast alert service
