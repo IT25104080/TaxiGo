@@ -15,14 +15,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-/**
- * ============================================================================
- * OOP CONCEPT: DEPENDENCY INJECTION (DI) & OBJECT COMPOSITION
- * ============================================================================
- * Collaborates with TaxiFileHandler and ContactFileHandler polymorphically via 
- * loose constructor composition.
- * ============================================================================
- */
 @Controller
 public class HomeController {
 
