@@ -30,8 +30,11 @@
                             <span th:if="${#strings.equalsIgnoreCase(t.vehicleType, 'SEDAN')}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">
                                 <i class="fa-solid fa-car-side text-xs"></i> Sedan Class
                             </span>
-                            <span th:if="${#strings.equalsIgnoreCase(t.vehicleType, 'SUV')}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-semibold bg-orange-500/10 text-orange-400 border border-orange-500/20">
+                            <span th:if="${#strings.equalsIgnoreCase(t.vehicleType, 'COOPER')}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-semibold bg-orange-500/10 text-orange-400 border border-orange-500/20">
                                 <i class="fa-solid fa-car text-xs"></i> Cooper Class
+                            </span>
+                            <span th:if="${#strings.equalsIgnoreCase(t.vehicleType, 'SUV')}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                                <i class="fa-solid fa-truck-monster text-xs"></i> SUV Class
                             </span>
                             <span th:if="${#strings.equalsIgnoreCase(t.vehicleType, 'LUXURY')}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-semibold bg-yellow-400/10 text-yellow-400 border border-yellow-400/20">
                                 <i class="fa-solid fa-gem text-[10px]"></i> Luxury Elite
@@ -60,7 +63,8 @@
                         <!-- Fallback Icons if image not present -->
                         <th:block th:if="${t.imageUrl == null or t.imageUrl.isEmpty()}">
                             <i th:if="${#strings.equalsIgnoreCase(t.vehicleType, 'SEDAN')}" class="fa-solid fa-car-side text-6xl text-blue-400 group-hover:scale-110 transition duration-300"></i>
-                            <i th:if="${#strings.equalsIgnoreCase(t.vehicleType, 'SUV')}" class="fa-solid fa-car text-6xl text-orange-400 group-hover:scale-110 transition duration-300"></i>
+                            <i th:if="${#strings.equalsIgnoreCase(t.vehicleType, 'COOPER')}" class="fa-solid fa-car text-6xl text-orange-400 group-hover:scale-110 transition duration-300"></i>
+                            <i th:if="${#strings.equalsIgnoreCase(t.vehicleType, 'SUV')}" class="fa-solid fa-truck-monster text-6xl text-purple-400 group-hover:scale-110 transition duration-300"></i>
                             <i th:if="${#strings.equalsIgnoreCase(t.vehicleType, 'LUXURY')}" class="fa-solid fa-gem text-6xl text-yellow-450 group-hover:scale-110 transition duration-300"></i>
                         </th:block>
                         
