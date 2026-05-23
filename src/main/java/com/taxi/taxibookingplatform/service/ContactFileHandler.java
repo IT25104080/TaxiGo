@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+// Service class for managing contact messages: persists to file, retrieves, and deletes messages
 @Service
 public class ContactFileHandler {
 
