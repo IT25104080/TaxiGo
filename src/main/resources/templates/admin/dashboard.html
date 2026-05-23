@@ -279,7 +279,7 @@
                                     </td>
                                     <td class="px-6 py-4">
                                         <span th:if="${#strings.equalsIgnoreCase(t.vehicleType, 'SEDAN')}" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">SEDAN</span>
-                                        <span th:if="${#strings.equalsIgnoreCase(t.vehicleType, 'SUV')}" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/10 text-purple-400 border border-purple-500/20">SUV</span>
+                                        <span th:if="${#strings.equalsIgnoreCase(t.vehicleType, 'SUV')}" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-orange-500/10 text-orange-400 border border-orange-500/20">COOPER</span>
                                         <span th:if="${#strings.equalsIgnoreCase(t.vehicleType, 'LUXURY')}" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-yellow-450/10 text-yellow-450 border border-yellow-400/20">LUXURY</span>
                                     </td>
                                     <td class="px-6 py-4 font-semibold text-slate-200" th:text="${t.ratePerKm} + ' LKR'">100 LKR</td>
@@ -326,7 +326,7 @@
                                 <select name="vehicleType" required 
                                         class="w-full bg-slate-900/70 border border-slate-800 focus:border-yellow-450 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition duration-200">
                                     <option value="SEDAN">Sedan Class</option>
-                                    <option value="SUV">SUV Comfort</option>
+                                    <option value="SUV">Cooper Class</option>
                                     <option value="LUXURY">Luxury Elite</option>
                                 </select>
                             </div>
@@ -440,7 +440,7 @@
                     <select id="updateVehicleType" name="vehicleType" required 
                             class="w-full bg-slate-950 border border-slate-800 focus:border-yellow-400 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none transition duration-200">
                         <option value="SEDAN">Sedan Class</option>
-                        <option value="SUV">SUV Comfort</option>
+                        <option value="SUV">Cooper Class</option>
                         <option value="LUXURY">Luxury Elite</option>
                     </select>
                 </div>
