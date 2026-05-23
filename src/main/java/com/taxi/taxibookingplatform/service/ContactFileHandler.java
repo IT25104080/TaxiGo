@@ -9,15 +9,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * ============================================================================
- * OOP CONCEPT: ENCAPSULATION & SINGLETON SERVICE PATTERN
- * ============================================================================
- * 1. ENCAPSULATION:
- *    Encapsulates contact messages persistent operations and list sorting algorithms.
- *    External classes have no access to the underlying flat file structure.
- * ============================================================================
- */
 @Service
 public class ContactFileHandler {
 
