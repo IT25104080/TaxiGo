@@ -147,7 +147,7 @@
                         <div class="grid grid-cols-2 gap-4 mt-6 border-t border-slate-900 pt-4 text-xs text-slate-400">
                             <div>
                                 <span class="text-[9px] uppercase font-bold text-slate-500 tracking-wider block mb-0.5">Scheduled Date</span>
-                                <p class="font-semibold text-slate-300"><i class="fa-regular fa-calendar text-yellow-400/80 mr-1"></i> <span th:text="${booking.pickupDate}">2026-05-22</span></p>
+                                <p class="font-semibold text-slate-300"><i class="fa-regular fa-calendar text-yellow-400/80 mr-1"></i> <span th:text="${#temporals.format(booking.pickupDate, 'dd MM yyyy')}">22 05 2026</span></p>
                             </div>
                             <div>
                                 <span class="text-[9px] uppercase font-bold text-slate-500 tracking-wider block mb-0.5">Dispatch Target Time</span>

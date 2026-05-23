@@ -85,13 +85,28 @@ public class BookingController {
         LocalTime parsedTime = (pickupTime == null || pickupTime.isBlank())
                 ? LocalTime.now() : LocalTime.parse(pickupTime);
 
+        LocalDate parsedDate;
+        try {
+            parsedDate = LocalDate.parse(pickupDate);
+        } catch (Exception e) {
+            try {
+                parsedDate = LocalDate.parse(pickupDate, java.time.format.DateTimeFormatter.ofPattern("dd MM yyyy"));
+            } catch (Exception ex) {
+                try {
+                    parsedDate = LocalDate.parse(pickupDate, java.time.format.DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                } catch (Exception ex2) {
+                    parsedDate = LocalDate.now();
+                }
+            }
+        }
+
         // Generate a random booking ID prefix with "BK"
         Booking booking = new Booking(
                 "BK" + UUID.randomUUID().toString().replace("-", "").substring(0, 8),
                 user.getUserId(),
                 pickup.trim(),
                 dropoff.trim(),
-                LocalDate.parse(pickupDate),
+                parsedDate,
                 parsedTime,
                 vehicleType,
                 "PENDING_PAYMENT",

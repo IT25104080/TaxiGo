@@ -134,8 +134,14 @@
                         <!-- Departure Date selection -->
                         <div>
                             <label class="block text-xs text-slate-400 font-bold mb-1.5 uppercase tracking-wider">Departure Date</label>
-                            <input type="date" name="pickupDate" required 
-                                   class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition duration-200">
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400">
+                                    <i class="fa-regular fa-calendar text-xs text-yellow-400"></i>
+                                </span>
+                                <input type="text" id="pickupDate" name="pickupDate" required placeholder="DD MM YYYY" 
+                                       class="w-full bg-slate-950 border border-slate-850 focus:border-yellow-400 rounded-xl pl-10 pr-4 py-3 text-sm text-white focus:outline-none transition duration-200"
+                                       maxlength="10" autocomplete="off">
+                            </div>
                         </div>
 
                         <!-- Vehicle Tier category class modifier selection -->
@@ -169,5 +175,43 @@
 
         </div>
     </div>
+
+    <!-- Date Input Auto-Formatter -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const dateInput = document.getElementById("pickupDate");
+            if (dateInput) {
+                dateInput.addEventListener("input", (e) => {
+                    let value = e.target.value.replace(/\D/g, ""); // Remove all non-digits
+                    let formatted = "";
+                    
+                    if (value.length > 0) {
+                        formatted += value.substring(0, 2);
+                    }
+                    if (value.length > 2) {
+                        formatted += " " + value.substring(2, 4);
+                    }
+                    if (value.length > 4) {
+                        formatted += " " + value.substring(4, 8);
+                    }
+                    
+                    e.target.value = formatted;
+                });
+
+                // Prevent typing non-digits (except utility keys)
+                dateInput.addEventListener("keydown", (e) => {
+                    const key = e.key;
+                    if (!/^\d$/.test(key) && 
+                        key !== "Backspace" && 
+                        key !== "Delete" && 
+                        key !== "Tab" && 
+                        key !== "ArrowLeft" && 
+                        key !== "ArrowRight") {
+                        e.preventDefault();
+                    }
+                });
+            }
+        });
+    </script>
 </main>
 </html>

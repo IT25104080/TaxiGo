@@ -28,6 +28,7 @@ public class BookingFileHandler {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
             writer.write(booking.toFileString());
             writer.newLine();
+            writer.newLine();
         }
     }
 
@@ -102,6 +103,7 @@ public class BookingFileHandler {
                         b.getFare(), b.getNotes(), b.getCreatedAt())
                         : b;
                 writer.write(out.toFileString());
+                writer.newLine();
                 writer.newLine();
             }
         }
