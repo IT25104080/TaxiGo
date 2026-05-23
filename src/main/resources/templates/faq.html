@@ -10,7 +10,7 @@
     <div class="absolute w-[450px] h-[450px] rounded-full bg-yellow-400/5 blur-[130px] bottom-[15%] right-[10%] z-0"></div>
 
     <div class="container mx-auto px-6 relative z-10">
-        <!-- Header -->
+        <!-- Page Header Section -->
         <div class="text-center max-w-2xl mx-auto mb-16 relative z-10">
             <h1 class="text-4xl md:text-5xl font-black text-white mt-4 font-heading tracking-tight">Frequently Asked <span class="bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent">Questions</span></h1>
             <p class="text-slate-400 text-sm mt-3 font-sans">
@@ -18,8 +18,9 @@
             </p>
         </div>
 
+        <!-- FAQ Items Container - Collapsible accordion cards -->
         <div class="max-w-3xl mx-auto space-y-4 relative z-10">
-            <!-- FAQ 1 -->
+            <!-- FAQ 1: Booking Process Question -->
             <details class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-2xl p-6 shadow-2xl transition duration-250 hover:border-slate-700/50 group" open>
                 <summary class="font-bold text-white text-base cursor-pointer hover:text-yellow-450 transition duration-200 outline-none select-none flex items-center gap-3">
                     <i class="fa-solid fa-circle-question text-yellow-400 shrink-0"></i>
@@ -30,7 +31,7 @@
                 </p>
             </details>
 
-            <!-- FAQ 2 -->
+            <!-- FAQ 2: Fare Calculation Details -->
             <details class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-2xl p-6 shadow-2xl transition duration-250 hover:border-slate-700/50 group">
                 <summary class="font-bold text-white text-base cursor-pointer hover:text-yellow-450 transition duration-200 outline-none select-none flex items-center gap-3">
                     <i class="fa-solid fa-circle-question text-purple-400 shrink-0"></i>
@@ -41,7 +42,7 @@
                 </p>
             </details>
 
-            <!-- FAQ 3 -->
+            <!-- FAQ 3: Cancellation Policy -->
             <details class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-2xl p-6 shadow-2xl transition duration-250 hover:border-slate-700/50 group">
                 <summary class="font-bold text-white text-base cursor-pointer hover:text-yellow-450 transition duration-200 outline-none select-none flex items-center gap-3">
                     <i class="fa-solid fa-circle-question text-emerald-400 shrink-0"></i>
@@ -52,7 +53,7 @@
                 </p>
             </details>
 
-            <!-- FAQ 4 -->
+            <!-- FAQ 4: Payment Methods Information -->
             <details class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-2xl p-6 shadow-2xl transition duration-250 hover:border-slate-700/50 group">
                 <summary class="font-bold text-white text-base cursor-pointer hover:text-yellow-450 transition duration-200 outline-none select-none flex items-center gap-3">
                     <i class="fa-solid fa-circle-question text-blue-400 shrink-0"></i>
@@ -63,7 +64,7 @@
                 </p>
             </details>
 
-            <!-- FAQ 5 -->
+            <!-- FAQ 5: Service Coverage Area -->
             <details class="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-2xl p-6 shadow-2xl transition duration-250 hover:border-slate-700/50 group">
                 <summary class="font-bold text-white text-base cursor-pointer hover:text-yellow-450 transition duration-200 outline-none select-none flex items-center gap-3">
                     <i class="fa-solid fa-circle-question text-pink-400 shrink-0"></i>
@@ -74,6 +75,7 @@
                 </p>
             </details>
 
+            <!-- Contact Support Section - CTA to direct users to support team -->
             <p class="text-center mt-12 text-slate-400 text-sm">
                 Still have questions? 
                 <a th:href="@{/contact}" class="text-yellow-400 hover:text-yellow-350 hover:underline font-bold transition ml-1">
