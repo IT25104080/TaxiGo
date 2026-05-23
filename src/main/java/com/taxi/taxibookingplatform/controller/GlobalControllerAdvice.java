@@ -10,14 +10,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.io.IOException;
 
-/**
- * ============================================================================
- * OOP CONCEPT: DEPENDENCY INJECTION (DI) & OBJECT COMPOSITION
- * ============================================================================
- * Exposes dynamic models to all Thymeleaf templates. Collaborates with the 
- * 'UserFileHandler' instance via constructor dependency injection.
- * ============================================================================
- */
 @ControllerAdvice
 public class GlobalControllerAdvice {
 

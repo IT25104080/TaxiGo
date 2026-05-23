@@ -20,14 +20,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-/**
- * ============================================================================
- * OOP CONCEPT: DEPENDENCY INJECTION (DI) & OBJECT COMPOSITION
- * ============================================================================
- * Collaborates with BookingFileHandler, PaymentFileHandler, and UserFileHandler 
- * polymorphically via loose constructor composition.
- * ============================================================================
- */
 @Controller
 public class PaymentController {
 
@@ -35,16 +27,17 @@ public class PaymentController {
     private final PaymentFileHandler paymentFileHandler;
     private final UserFileHandler userFileHandler;
 
-    public PaymentController(BookingFileHandler bookingFileHandler, 
-                             PaymentFileHandler paymentFileHandler, 
-                             UserFileHandler userFileHandler) {
+    public PaymentController(BookingFileHandler bookingFileHandler,
+            PaymentFileHandler paymentFileHandler,
+            UserFileHandler userFileHandler) {
         this.bookingFileHandler = bookingFileHandler;
         this.paymentFileHandler = paymentFileHandler;
         this.userFileHandler = userFileHandler;
     }
 
     @GetMapping("/payment")
-    public String showPaymentPortal(@RequestParam String bookingId, @RequestParam(required = false) String error, HttpSession session, Model model) throws IOException {
+    public String showPaymentPortal(@RequestParam String bookingId, @RequestParam(required = false) String error,
+            HttpSession session, Model model) throws IOException {
         User user = getLoggedInUser(session);
         if (user == null) {
             return "redirect:/user/login";
@@ -117,8 +110,7 @@ public class PaymentController {
                 booking.getFare(),
                 maskedCard,
                 "SUCCESS",
-                LocalDateTime.now()
-        );
+                LocalDateTime.now());
 
         // Save Transaction
         paymentFileHandler.save(payment);
@@ -131,7 +123,8 @@ public class PaymentController {
 
     private User getLoggedInUser(HttpSession session) throws IOException {
         Object userId = session.getAttribute(SessionKeys.USER_ID);
-        if (userId == null) return null;
+        if (userId == null)
+            return null;
         return userFileHandler.getUserById(userId.toString());
     }
 }

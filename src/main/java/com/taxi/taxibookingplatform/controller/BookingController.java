@@ -21,16 +21,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.UUID;
 
-/**
- * ============================================================================
- * OOP CONCEPT: DEPENDENCY INJECTION (DI) & OBJECT COMPOSITION
- * ============================================================================
- * Instead of statically binding to procedural helpers, this controller uses 
- * Dependency Injection (DI) through constructor arguments. It is composed of 
- * its collaborators ('BookingFileHandler' and 'UserFileHandler'), showing low 
- * coupling, loose cohesion, and object modularity.
- * ============================================================================
- */
 @Controller
 public class BookingController {
 
@@ -90,7 +80,8 @@ public class BookingController {
         }
 
         LocalTime parsedTime = (pickupTime == null || pickupTime.isBlank())
-                ? LocalTime.now() : LocalTime.parse(pickupTime);
+                ? LocalTime.now()
+                : LocalTime.parse(pickupTime);
 
         if (parsedDate.equals(LocalDate.now()) && parsedTime.isBefore(LocalTime.now().minusMinutes(5))) {
             model.addAttribute("error", "Pickup time must be in the future.");
@@ -112,8 +103,7 @@ public class BookingController {
                 "PENDING_PAYMENT",
                 fare,
                 notes != null ? notes.trim() : "",
-                LocalDateTime.now()
-        );
+                LocalDateTime.now());
         bookingFileHandler.addBooking(booking);
         return "redirect:/payment?bookingId=" + booking.getBookingId();
     }
@@ -130,7 +120,8 @@ public class BookingController {
 
     private User getLoggedInUser(HttpSession session) throws IOException {
         Object userId = session.getAttribute(SessionKeys.USER_ID);
-        if (userId == null) return null;
+        if (userId == null)
+            return null;
         return userFileHandler.getUserById(userId.toString());
     }
 }

@@ -15,14 +15,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-/**
- * ============================================================================
- * OOP CONCEPT: DEPENDENCY INJECTION (DI) & OBJECT COMPOSITION
- * ============================================================================
- * Collaborates with TaxiFileHandler and ContactFileHandler polymorphically via 
- * loose constructor composition.
- * ============================================================================
- */
 @Controller
 public class HomeController {
 
@@ -85,7 +77,8 @@ public class HomeController {
         }
 
         if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidName(name)) {
-            model.addAttribute("error", "Name must contain only alphabetic characters and spaces (2 to 50 characters).");
+            model.addAttribute("error",
+                    "Name must contain only alphabetic characters and spaces (2 to 50 characters).");
             return "contact";
         }
         if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidEmail(email)) {
@@ -99,8 +92,7 @@ public class HomeController {
 
         ContactMessage msg = new ContactMessage(
                 "MSG" + UUID.randomUUID().toString().replace("-", "").substring(0, 8),
-                name, email, subject, message, LocalDateTime.now()
-        );
+                name, email, subject, message, LocalDateTime.now());
         contactFileHandler.save(msg);
         model.addAttribute("success", true);
         return "contact";

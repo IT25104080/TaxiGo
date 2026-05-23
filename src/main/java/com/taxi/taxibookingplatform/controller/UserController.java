@@ -18,15 +18,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * ============================================================================
- * OOP CONCEPT: DEPENDENCY INJECTION (DI) & OBJECT COMPOSITION
- * ============================================================================
- * Decouples user registration, authentication, dashboarding, and profile management 
- * by injecting instantiable collaborator beans ('UserFileHandler' and 'BookingFileHandler') 
- * via constructor injection.
- * ============================================================================
- */
 @Controller
 public class UserController {
 
@@ -89,7 +80,8 @@ public class UserController {
             Model model) throws IOException {
 
         if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidName(name)) {
-            model.addAttribute("error", "Name must contain only alphabetic characters and spaces (2 to 50 characters).");
+            model.addAttribute("error",
+                    "Name must contain only alphabetic characters and spaces (2 to 50 characters).");
             return "User/register";
         }
         if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidEmail(email)) {
@@ -97,11 +89,13 @@ public class UserController {
             return "User/register";
         }
         if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidPhone(phone)) {
-            model.addAttribute("error", "Please enter a valid Sri Lankan phone number (e.g., 0771234567 or +94771234567).");
+            model.addAttribute("error",
+                    "Please enter a valid Sri Lankan phone number (e.g., 0771234567 or +94771234567).");
             return "User/register";
         }
         if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidPassword(password)) {
-            model.addAttribute("error", "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one numeric digit, and one special character.");
+            model.addAttribute("error",
+                    "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one numeric digit, and one special character.");
             return "User/register";
         }
 
@@ -166,7 +160,8 @@ public class UserController {
         }
 
         if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidName(name)) {
-            model.addAttribute("error", "Name must contain only alphabetic characters and spaces (2 to 50 characters).");
+            model.addAttribute("error",
+                    "Name must contain only alphabetic characters and spaces (2 to 50 characters).");
             model.addAttribute("user", UserView.from(existing));
             model.addAttribute("bookings", bookingFileHandler.getBookingsByUserId(existing.getUserId()));
             return "User/profile";
@@ -183,8 +178,10 @@ public class UserController {
             model.addAttribute("bookings", bookingFileHandler.getBookingsByUserId(existing.getUserId()));
             return "User/profile";
         }
-        if (password != null && !password.isBlank() && !com.taxi.taxibookingplatform.util.ValidationUtils.isValidPassword(password)) {
-            model.addAttribute("error", "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one numeric digit, and one special character.");
+        if (password != null && !password.isBlank()
+                && !com.taxi.taxibookingplatform.util.ValidationUtils.isValidPassword(password)) {
+            model.addAttribute("error",
+                    "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one numeric digit, and one special character.");
             model.addAttribute("user", UserView.from(existing));
             model.addAttribute("bookings", bookingFileHandler.getBookingsByUserId(existing.getUserId()));
             return "User/profile";
@@ -199,7 +196,8 @@ public class UserController {
         }
 
         String newPassword = (password != null && !password.isBlank())
-                ? password : existing.getPassword();
+                ? password
+                : existing.getPassword();
         User updated;
         if (existing instanceof PremiumPassenger pp) {
             updated = new PremiumPassenger(existing.getUserId(), name, email, newPassword, phone,
@@ -262,7 +260,7 @@ public class UserController {
             @RequestParam String preferredPayment) throws IOException {
 
         Passenger p = new Passenger(userId, name, email, password, phone,
-                                    LocalDate.now(), address, preferredPayment);
+                LocalDate.now(), address, preferredPayment);
         userFileHandler.addUser(p);
         return "redirect:/users";
     }
@@ -275,8 +273,8 @@ public class UserController {
             @RequestParam double discountRate, @RequestParam int loyaltyPoints) throws IOException {
 
         PremiumPassenger pp = new PremiumPassenger(userId, name, email, password, phone,
-                                                    LocalDate.now(), membershipLevel,
-                                                    discountRate, loyaltyPoints);
+                LocalDate.now(), membershipLevel,
+                discountRate, loyaltyPoints);
         userFileHandler.addUser(pp);
         return "redirect:/users";
     }
@@ -304,7 +302,7 @@ public class UserController {
             @RequestParam String address, @RequestParam String preferredPayment) throws IOException {
 
         Passenger p = new Passenger(userId, name, email, password, phone,
-                                    LocalDate.parse(date), address, preferredPayment);
+                LocalDate.parse(date), address, preferredPayment);
         userFileHandler.updateUser(p);
         return "redirect:/users";
     }
@@ -318,8 +316,8 @@ public class UserController {
             @RequestParam int loyaltyPoints) throws IOException {
 
         PremiumPassenger pp = new PremiumPassenger(userId, name, email, password, phone,
-                                                    LocalDate.parse(date), membershipLevel,
-                                                    discountRate, loyaltyPoints);
+                LocalDate.parse(date), membershipLevel,
+                discountRate, loyaltyPoints);
         userFileHandler.updateUser(pp);
         return "redirect:/users";
     }

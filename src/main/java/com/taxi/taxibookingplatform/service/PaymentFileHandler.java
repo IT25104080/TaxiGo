@@ -7,15 +7,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * ============================================================================
- * OOP CONCEPT: ENCAPSULATION & SINGLETON SERVICE PATTERN
- * ============================================================================
- * 1. ENCAPSULATION:
- *    Encapsulates transactions logger database loading and saving structures.
- *    Restricts external components from directly tampering with payment data logs.
- * ============================================================================
- */
 @Service
 public class PaymentFileHandler {
 
@@ -32,12 +23,14 @@ public class PaymentFileHandler {
     public List<Payment> getAllPayments() throws IOException {
         List<Payment> list = new ArrayList<>();
         File file = new File(filePath);
-        if (!file.exists()) return list;
+        if (!file.exists())
+            return list;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty()) continue;
+                if (line.trim().isEmpty())
+                    continue;
                 Payment payment = Payment.fromFileLine(line.trim());
                 if (payment != null) {
                     list.add(payment);

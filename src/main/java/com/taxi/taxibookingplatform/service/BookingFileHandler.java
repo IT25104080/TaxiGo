@@ -8,24 +8,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * ============================================================================
- * OOP CONCEPT: ENCAPSULATION & SINGLETON SERVICE PATTERN
- * ============================================================================
- * By converting this class into a Spring-managed '@Service' bean and removing the 
- * 'static' modifier from all methods, we shift from a procedural paradigm to an 
- * Object-Oriented component architecture.
- * 
- * 1. ENCAPSULATION:
- *    The class encapsulates the details of persistence storage logic ('FILE_PATH') 
- *    within instance-based methods. Objects that interact with this service do not 
- *    need to know how the files are written or read.
- * 
- * 2. OBJECT COLLABORATION:
- *    Controllers can compose this service as a collaborator bean via constructor-based 
- *    Dependency Injection, promoting looser coupling and high cohesion.
- * ============================================================================
- */
 @Service
 public class BookingFileHandler {
 
@@ -42,14 +24,17 @@ public class BookingFileHandler {
     public List<Booking> getAllBookings() throws IOException {
         List<Booking> list = new ArrayList<>();
         File file = new File(filePath);
-        if (!file.exists()) return list;
+        if (!file.exists())
+            return list;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty()) continue;
+                if (line.trim().isEmpty())
+                    continue;
                 Booking b = Booking.fromFileLine(line);
-                if (b != null) list.add(b);
+                if (b != null)
+                    list.add(b);
             }
         }
         list.sort(Comparator.comparing(Booking::getCreatedAt).reversed());
@@ -75,8 +60,8 @@ public class BookingFileHandler {
             for (Booking b : all) {
                 Booking out = b.getBookingId().equals(bookingId)
                         ? new Booking(b.getBookingId(), b.getUserId(), b.getPickup(), b.getDropoff(),
-                        b.getPickupDate(), b.getPickupTime(), b.getVehicleType(), status,
-                        b.getFare(), b.getNotes(), b.getCreatedAt())
+                                b.getPickupDate(), b.getPickupTime(), b.getVehicleType(), status,
+                                b.getFare(), b.getNotes(), b.getCreatedAt())
                         : b;
                 writer.write(out.toFileString());
                 writer.newLine();

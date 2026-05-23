@@ -19,14 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * ============================================================================
- * OOP CONCEPT: DEPENDENCY INJECTION (DI) & OBJECT COMPOSITION
- * ============================================================================
- * Leverages constructor dependency injection to compose and coordinate administrative 
- * operations across bookings, users, messaging, and vehicle services.
- * ============================================================================
- */
 @Controller
 public class AdminController {
 
@@ -35,10 +27,10 @@ public class AdminController {
     private final ContactFileHandler contactFileHandler;
     private final TaxiFileHandler taxiFileHandler;
 
-    public AdminController(BookingFileHandler bookingFileHandler, 
-                           UserFileHandler userFileHandler, 
-                           ContactFileHandler contactFileHandler, 
-                           TaxiFileHandler taxiFileHandler) {
+    public AdminController(BookingFileHandler bookingFileHandler,
+            UserFileHandler userFileHandler,
+            ContactFileHandler contactFileHandler,
+            TaxiFileHandler taxiFileHandler) {
         this.bookingFileHandler = bookingFileHandler;
         this.userFileHandler = userFileHandler;
         this.contactFileHandler = contactFileHandler;
@@ -76,7 +68,7 @@ public class AdminController {
         model.addAttribute("users", users);
         model.addAttribute("messages", messages);
         model.addAttribute("taxis", taxis);
-        
+
         model.addAttribute("totalBookings", totalBookings);
         model.addAttribute("pendingBookings", pendingBookings);
         model.addAttribute("activeBookings", activeBookings);
@@ -134,19 +126,27 @@ public class AdminController {
         }
 
         if (modelName == null || modelName.isBlank()) {
-            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Chassis model name is required.", java.nio.charset.StandardCharsets.UTF_8);
+            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Chassis model name is required.",
+                    java.nio.charset.StandardCharsets.UTF_8);
         }
         if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidLicensePlate(licensePlate)) {
-            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Invalid license plate format. Expected standard Sri Lankan format (e.g., WP CAD-4567 or CAD-4567).", java.nio.charset.StandardCharsets.UTF_8);
+            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode(
+                    "Invalid license plate format. Expected standard Sri Lankan format (e.g., WP CAD-4567 or CAD-4567).",
+                    java.nio.charset.StandardCharsets.UTF_8);
         }
         if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidName(driverName)) {
-            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Chauffeur name must contain only alphabetic characters and spaces (2 to 50 characters).", java.nio.charset.StandardCharsets.UTF_8);
+            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode(
+                    "Chauffeur name must contain only alphabetic characters and spaces (2 to 50 characters).",
+                    java.nio.charset.StandardCharsets.UTF_8);
         }
         if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidPhone(driverPhone)) {
-            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Please enter a valid Sri Lankan chauffeur phone number.", java.nio.charset.StandardCharsets.UTF_8);
+            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode(
+                    "Please enter a valid Sri Lankan chauffeur phone number.", java.nio.charset.StandardCharsets.UTF_8);
         }
         if (ratePerKm <= 0) {
-            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Rate per kilometer must be a positive number greater than 0.", java.nio.charset.StandardCharsets.UTF_8);
+            return "redirect:/admin/dashboard?error="
+                    + java.net.URLEncoder.encode("Rate per kilometer must be a positive number greater than 0.",
+                            java.nio.charset.StandardCharsets.UTF_8);
         }
 
         String img = (imageUrl == null) ? "" : imageUrl.trim();
@@ -173,19 +173,27 @@ public class AdminController {
         }
 
         if (modelName == null || modelName.isBlank()) {
-            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Vehicle model name is required.", java.nio.charset.StandardCharsets.UTF_8);
+            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Vehicle model name is required.",
+                    java.nio.charset.StandardCharsets.UTF_8);
         }
         if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidLicensePlate(licensePlate)) {
-            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Invalid license plate format. Expected standard Sri Lankan format (e.g., WP CAD-4567 or CAD-4567).", java.nio.charset.StandardCharsets.UTF_8);
+            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode(
+                    "Invalid license plate format. Expected standard Sri Lankan format (e.g., WP CAD-4567 or CAD-4567).",
+                    java.nio.charset.StandardCharsets.UTF_8);
         }
         if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidName(driverName)) {
-            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Chauffeur name must contain only alphabetic characters and spaces (2 to 50 characters).", java.nio.charset.StandardCharsets.UTF_8);
+            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode(
+                    "Chauffeur name must contain only alphabetic characters and spaces (2 to 50 characters).",
+                    java.nio.charset.StandardCharsets.UTF_8);
         }
         if (!com.taxi.taxibookingplatform.util.ValidationUtils.isValidPhone(driverPhone)) {
-            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Please enter a valid Sri Lankan chauffeur phone number.", java.nio.charset.StandardCharsets.UTF_8);
+            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode(
+                    "Please enter a valid Sri Lankan chauffeur phone number.", java.nio.charset.StandardCharsets.UTF_8);
         }
         if (ratePerKm <= 0) {
-            return "redirect:/admin/dashboard?error=" + java.net.URLEncoder.encode("Rate per kilometer must be a positive number greater than 0.", java.nio.charset.StandardCharsets.UTF_8);
+            return "redirect:/admin/dashboard?error="
+                    + java.net.URLEncoder.encode("Rate per kilometer must be a positive number greater than 0.",
+                            java.nio.charset.StandardCharsets.UTF_8);
         }
 
         String img = (imageUrl == null) ? "" : imageUrl.trim();

@@ -10,19 +10,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * ============================================================================
- * OOP CONCEPT: ENCAPSULATION & SINGLETON SERVICE PATTERN
- * ============================================================================
- * 1. ENCAPSULATION:
- *    Encapsulates raw data parsing (deserialization from CSV elements to Passenger 
- *    or PremiumPassenger objects) and file manipulation. Clients of UserFileHandler 
- *    only query clean abstractions like 'User' instead of raw text elements.
- * 
- * 2. OBJECT COMPOSITION:
- *    Serves as an instantiable collaborator wired polymorphically.
- * ============================================================================
- */
 @Service
 public class UserFileHandler {
 
@@ -39,30 +26,31 @@ public class UserFileHandler {
     public List<User> getAllUsers() throws IOException {
         List<User> userList = new ArrayList<>();
         File file = new File(filePath);
-        if (!file.exists()) return userList;
+        if (!file.exists())
+            return userList;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty()) continue;
+                if (line.trim().isEmpty())
+                    continue;
                 String[] parts = line.split(",");
-                if (parts.length < 2) continue;
+                if (parts.length < 2)
+                    continue;
                 String type = parts[0];
 
                 if (type.equals("PASSENGER") && parts.length >= 9) {
                     Passenger p = new Passenger(
-                        parts[1], parts[2], parts[3], parts[4],
-                        parts[5], LocalDate.parse(parts[6]),
-                        parts[7], parts[8]
-                    );
+                            parts[1], parts[2], parts[3], parts[4],
+                            parts[5], LocalDate.parse(parts[6]),
+                            parts[7], parts[8]);
                     userList.add(p);
                 } else if (type.equals("PREMIUM") && parts.length >= 10) {
                     PremiumPassenger pp = new PremiumPassenger(
-                        parts[1], parts[2], parts[3], parts[4],
-                        parts[5], LocalDate.parse(parts[6]),
-                        parts[7], Double.parseDouble(parts[8]),
-                        Integer.parseInt(parts[9])
-                    );
+                            parts[1], parts[2], parts[3], parts[4],
+                            parts[5], LocalDate.parse(parts[6]),
+                            parts[7], Double.parseDouble(parts[8]),
+                            Integer.parseInt(parts[9]));
                     userList.add(pp);
                 }
             }
@@ -72,14 +60,16 @@ public class UserFileHandler {
 
     public User getUserById(String userId) throws IOException {
         for (User u : getAllUsers()) {
-            if (u.getUserId().equals(userId)) return u;
+            if (u.getUserId().equals(userId))
+                return u;
         }
         return null;
     }
 
     public User getUserByEmail(String email) throws IOException {
         for (User u : getAllUsers()) {
-            if (u.getEmail().equalsIgnoreCase(email)) return u;
+            if (u.getEmail().equalsIgnoreCase(email))
+                return u;
         }
         return null;
     }
@@ -89,7 +79,8 @@ public class UserFileHandler {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, false))) {
             for (User u : allUsers) {
                 writer.write(u.getUserId().equals(updatedUser.getUserId())
-                             ? updatedUser.toFileString() : u.toFileString());
+                        ? updatedUser.toFileString()
+                        : u.toFileString());
                 writer.newLine();
             }
         }
