@@ -117,11 +117,6 @@
                         <div class="absolute w-[200px] h-[200px] rounded-full bg-purple-500/20 blur-xl top-[-30%] right-[-10%] pointer-events-none"></div>
                     </div>
 
-                    <!-- 
-                      Payment Entry Form:
-                      Submits to '/payment/complete' via POST. 
-                      Thymeleaf action utility @{/payment/complete} dynamically prepends context paths if any.
-                    -->
                     <form th:action="@{/payment/complete}" method="post" class="flex flex-col gap-4">
                         <!-- 
                           Hidden Booking ID:
